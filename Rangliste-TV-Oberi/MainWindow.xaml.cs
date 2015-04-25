@@ -23,13 +23,22 @@ namespace Rangliste_TV_Oberi
         public MainWindow()
         {
             InitializeComponent();
+
+            Erfassung erfassung = new Erfassung();
+            erfassung.Show();
         }
 
         private void menuItemInfo_Click(object sender, RoutedEventArgs e)
         {
             Info info = new Info();
-
             info.Show();
         }
+
+        private void menuItemErfassng_Click(object sender, RoutedEventArgs e)
+        {
+            Erfassung erfassung = new Erfassung();
+            erfassung.Show();
+        }
+
     }
 }
