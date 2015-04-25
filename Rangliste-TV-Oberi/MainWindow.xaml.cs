@@ -24,5 +24,12 @@ namespace Rangliste_TV_Oberi
         {
             InitializeComponent();
         }
+
+        private void menuItemInfo_Click(object sender, RoutedEventArgs e)
+        {
+            Info info = new Info();
+
+            info.Show();
+        }
     }
 }
