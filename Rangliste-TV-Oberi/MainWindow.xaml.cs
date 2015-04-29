@@ -40,5 +40,11 @@ namespace Rangliste_TV_Oberi
             erfassung.Show();
         }
 
+        private void menuItemEinstellungen_Click(object sender, RoutedEventArgs e)
+        {
+            Einstellungen einstellungen = new Einstellungen();
+            einstellungen.Show();
+        }
+
     }
 }

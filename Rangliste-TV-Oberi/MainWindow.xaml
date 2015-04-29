@@ -4,6 +4,10 @@
         Title="Rangliste TV-Oberi" Height="350" Width="525" Icon="Res/icon.ico" SizeToContent="Manual" WindowStartupLocation="CenterScreen">
     <Grid>
         <Menu HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="517">
+            <MenuItem Header="Anwendung">
+                <MenuItem Name="menuItemEinstellungen" Header="Einstellungen" Click="menuItemEinstellungen_Click"/>
+            </MenuItem>
+            
             <MenuItem Header="Fenster">
                 <MenuItem Name="menuItemErfassng" Header="Erfassung" HorizontalAlignment="Left" Width="140" Click="menuItemErfassng_Click"/>
             </MenuItem>
