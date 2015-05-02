@@ -54,5 +54,11 @@ namespace Rangliste_TV_Oberi
                     cBCategory.SelectedIndex = -1;
             }
         }
+
+       private void Window_Closed(object sender, EventArgs e)
+        {
+            MainWindow main = (MainWindow) App.Current.MainWindow;
+            main.erfassungIsOpen = false;
+        }
     }
 }

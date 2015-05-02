@@ -20,24 +20,35 @@ namespace Rangliste_TV_Oberi
     /// </summary>
     public partial class MainWindow : Window
     {
+        public bool erfassungIsOpen = false;
+        public bool infoIsOpen = false;
         public MainWindow()
         {
             InitializeComponent();
 
             Erfassung erfassung = new Erfassung();
             erfassung.Show();
+            erfassungIsOpen = true;
         }
 
         private void menuItemInfo_Click(object sender, RoutedEventArgs e)
         {
-            Info info = new Info();
-            info.Show();
+            if (!infoIsOpen)
+            {
+                Info info = new Info();
+                info.Show();
+                infoIsOpen = true;
+            }
         }
 
         private void menuItemErfassng_Click(object sender, RoutedEventArgs e)
         {
-            Erfassung erfassung = new Erfassung();
-            erfassung.Show();
+            if (!erfassungIsOpen)
+            {
+                Erfassung erfassung = new Erfassung();
+                erfassung.Show();
+                erfassungIsOpen = true;
+            }
         }
 
         private void menuItemEinstellungen_Click(object sender, RoutedEventArgs e)
@@ -46,5 +57,10 @@ namespace Rangliste_TV_Oberi
             einstellungen.Show();
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            App.Current.Shutdown();
+        }
+        
     }
 }
