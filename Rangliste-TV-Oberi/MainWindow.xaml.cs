@@ -22,6 +22,8 @@ namespace Rangliste_TV_Oberi
     {
         public bool erfassungIsOpen = false;
         public bool infoIsOpen = false;
+        public bool einstellungenIsOpen = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -53,10 +55,13 @@ namespace Rangliste_TV_Oberi
 
         private void menuItemEinstellungen_Click(object sender, RoutedEventArgs e)
         {
-            Einstellungen einstellungen = new Einstellungen();
-            einstellungen.Show();
+            if (!einstellungenIsOpen)
+            {
+                Einstellungen einstellungen = new Einstellungen();
+                einstellungen.Show();
+                einstellungenIsOpen = true;
+            }
         }
-
         private void Window_Closed(object sender, EventArgs e)
         {
             App.Current.Shutdown();

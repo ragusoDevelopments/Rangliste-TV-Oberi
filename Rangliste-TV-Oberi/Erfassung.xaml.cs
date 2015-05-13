@@ -20,6 +20,8 @@ namespace Rangliste_TV_Oberi
     /// </summary>
     public partial class Erfassung : Window
     {
+        private MainWindow main = (MainWindow)App.Current.MainWindow;
+
         public Erfassung()
         {
             InitializeComponent();
@@ -57,7 +59,6 @@ namespace Rangliste_TV_Oberi
 
        private void Window_Closed(object sender, EventArgs e)
         {
-            MainWindow main = (MainWindow) App.Current.MainWindow;
             main.erfassungIsOpen = false;
         }
     }

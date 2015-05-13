@@ -19,9 +19,15 @@ namespace Rangliste_TV_Oberi
     /// </summary>
     public partial class Einstellungen : Window
     {
+        MainWindow main = (MainWindow) App.Current.MainWindow;
         public Einstellungen()
         {
             InitializeComponent();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            main.einstellungenIsOpen = false;
         }
     }
 }
