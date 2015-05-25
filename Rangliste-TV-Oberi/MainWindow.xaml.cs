@@ -66,6 +66,11 @@ namespace Rangliste_TV_Oberi
         {
             App.Current.Shutdown();
         }
+
+        private void menuItemClose_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.Shutdown();
+        }
         
     }
 }
