@@ -24,7 +24,7 @@
 
         </GroupBox>
         <TextBox Name="tBName" HorizontalAlignment="Left" Height="20" Margin="115,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="176"/>
-        <TextBox Name="tBYear" HorizontalAlignment="Left" Height="20" Margin="115,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="176" Grid.Row="1" AllowDrop="True" TextChanged="tBYear_TextChanged" BorderBrush="#FFB3ABAB"/>
+        <TextBox Name="tBYear" HorizontalAlignment="Left" Height="20" Margin="115,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="176" Grid.Row="1" AllowDrop="True" BorderBrush="#FFB3ABAB"/>
         <Label Content="Status:" HorizontalAlignment="Left" Height="28" Margin="10,9,0,0" VerticalAlignment="Top" Width="66" Grid.Row="2"/>
         <ComboBox Name="cBStatus" HorizontalAlignment="Left" Height="24" Margin="115,13,0,0" VerticalAlignment="Top" Width="64" Grid.Row="2">
             <ComboBoxItem Content="Aktiv"/>

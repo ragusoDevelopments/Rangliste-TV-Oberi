@@ -28,10 +28,6 @@ namespace Rangliste_TV_Oberi
             
         }
 
-        private void tBYear_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
 
        private void Window_Closed(object sender, EventArgs e)
         {
