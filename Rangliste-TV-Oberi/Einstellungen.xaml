@@ -1,18 +1,23 @@
 ﻿<Window x:Class="Rangliste_TV_Oberi.Einstellungen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Einstellungen" Height="394.925" Width="588" WindowStyle="ToolWindow" Closed="Window_Closed">
+        Title="Einstellungen" Height="394.925" Width="588" WindowStyle="ToolWindow" Closed="Window_Closed" WindowStartupLocation="CenterScreen">
     <Grid>
-        <TreeView>
+        <TreeView Margin="0,0,-10,0">
             <TreeViewItem Header="Beim Start öffnen">
                 <CheckBox x:Name="chBErfassung" Content="Erfassung"/>
                 <CheckBox x:Name="chBEinstellungen" Content="Einstellungen"/>
             </TreeViewItem>
 
-            <TreeViewItem Header="Disziplin hinzufügen" IsExpanded="True">
-                <TextBox x:Name="tBDisciplineName" Width="121" />
+            <TreeViewItem Header="Disziplin hinzufügen">
+                <TextBox x:Name="tBDisciplineName" Height="23" Width="121" />
                 <TextBox x:Name="tBMax" Height="23" Width="121" Margin="0,5,0,0"/>
                 <TextBox x:Name="tBMin" Height="23" Width="121" Margin="0,5,0,0"/>
+                <ComboBox x:Name="cBoxResultType" Height="23" Width="121" Margin="0,5,0,0" SelectedIndex="0">
+                    <ComboBoxItem Content="Distanz" />
+                    <ComboBoxItem Content="Zeit" />
+                    
+                </ComboBox>
             </TreeViewItem>
 
             <TreeViewItem Header="Neuen Disziplin-Satz erstellen">
