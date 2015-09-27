@@ -27,11 +27,46 @@ namespace Rangliste_TV_Oberi
         public MainWindow()
         {
             InitializeComponent();
-
             Erfassung erfassung = new Erfassung();
             erfassung.Show();
             erfassungIsOpen = true;
+
+            Businessobjects.SQLFunctions.insertParticipant("test3", 2000, "female");
+            Businessobjects.SQLFunctions.insertParticipant("test4", 2005, "male");
+            showDatabaseTable();
+
+            
         }
+
+        void showDatabaseTable()
+        {
+            IEnumerable<RL_Datacontext.Participants> parts = Businessobjects.SQLFunctions.listTable();
+
+            foreach(var p in parts)
+            {
+                ListViewItem item = new ListViewItem();
+                item.Content = p.Name;
+                ListView1.Items.Add(item);
+            }
+                
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private void menuItemInfo_Click(object sender, RoutedEventArgs e)
         {
@@ -62,6 +97,7 @@ namespace Rangliste_TV_Oberi
                 einstellungenIsOpen = true;
             }
         }
+
         private void Window_Closed(object sender, EventArgs e)
         {
             App.Current.Shutdown();
@@ -71,6 +107,7 @@ namespace Rangliste_TV_Oberi
         {
             App.Current.Shutdown();
         }
+
         
     }
 }

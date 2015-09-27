@@ -9,11 +9,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rangliste_TV_Oberi</RootNamespace>
     <AssemblyName>Rangliste-TV-Oberi</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>C:\Users\Andrea\Desktop\Lauras songs\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -39,6 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>41BD43F36DBBCAEE7EA199D470203022107A32B5</ManifestCertificateThumbprint>
@@ -61,9 +64,16 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Rangliste_TV_Oberi.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Res\icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -81,20 +91,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="_Rangliste_TV_OberiDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_Rangliste_TV_OberiDataSet.xsd</DependentUpon>
-    </Compile>
-    <Page Include="Einstellungen.xaml">
+    <Compile Include="Businessobjects\helperParticipants.cs" />
+    <Page Include="UI\Einstellungen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Erfassung.xaml">
+    <Page Include="UI\Erfassung.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Info.xaml">
+    <Page Include="UI\Info.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -106,13 +112,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Einstellungen.xaml.cs">
+    <Compile Include="Businessobjects\SQLFunctions.cs" />
+    <Compile Include="RL Datacontext\RLDB.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RLDB.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Einstellungen.xaml.cs">
       <DependentUpon>Einstellungen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Erfassung.xaml.cs">
+    <Compile Include="UI\Erfassung.xaml.cs">
       <DependentUpon>Erfassung.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Info.xaml.cs">
+    <Compile Include="UI\Info.xaml.cs">
       <DependentUpon>Info.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
@@ -144,16 +156,13 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Rangliste-TV-Oberi_TemporaryKey.pfx" />
-    <None Include="_Rangliste_TV_OberiDataSet.xsc">
-      <DependentUpon>_Rangliste_TV_OberiDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="_Rangliste_TV_OberiDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>_Rangliste_TV_OberiDataSet.Designer.cs</LastGenOutput>
+    <None Include="RL Datacontext\RLDB.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>RLDB.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="_Rangliste_TV_OberiDataSet.xss">
-      <DependentUpon>_Rangliste_TV_OberiDataSet.xsd</DependentUpon>
+    <None Include="RL Datacontext\RLDB.dbml.layout">
+      <DependentUpon>RLDB.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -183,16 +192,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Rangliste-TV-Oberi.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Rangliste-TV-Oberi_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>Rangliste-TV-Oberi.mdf</DependentUpon>
-    </Content>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Businessobjects\" />
+    <Content Include="RL-Database.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RL-Database_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>RL-Database.mdf</DependentUpon>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

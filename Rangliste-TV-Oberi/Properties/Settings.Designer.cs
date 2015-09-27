@@ -26,22 +26,11 @@ namespace Rangliste_TV_Oberi.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\RLOberi.mdf;Integrat" +
-            "ed Security=True;Connect Timeout=30")]
-        public string RLOberiConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\RL-Database.mdf;Inte" +
+            "grated Security=True;Connect Timeout=30")]
+        public string RL_DatabaseConnectionString {
             get {
-                return ((string)(this["RLOberiConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\Rangliste-TV-Oberi.m" +
-            "df;Integrated Security=True;Connect Timeout=30")]
-        public string Rangliste_TV_OberiConnectionString {
-            get {
-                return ((string)(this["Rangliste_TV_OberiConnectionString"]));
+                return ((string)(this["RL_DatabaseConnectionString"]));
             }
         }
     }
