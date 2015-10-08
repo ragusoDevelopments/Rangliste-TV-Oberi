@@ -20,19 +20,23 @@ namespace Rangliste_TV_Oberi
     /// </summary>
     public partial class Erfassung : Window
     {
-        
-
+        MainWindow main = (MainWindow)App.Current.MainWindow;
+        int biggestStartnr;
         public Erfassung()
         {
             InitializeComponent();
-            
+            biggestStartnr = Businessobjects.SQLFunctions.checkStartnumbers();
         }
 
 
        private void Window_Closed(object sender, EventArgs e)
         {
-            MainWindow main = (MainWindow)App.Current.MainWindow;
             main.erfassungIsOpen = false;
         }
+
+       private void btnAdd_Click(object sender, RoutedEventArgs e)
+       {
+          
+       }
     }
 }

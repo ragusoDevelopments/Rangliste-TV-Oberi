@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <Label Content="Vorname/Name:" HorizontalAlignment="Left" Height="24" Margin="10,10,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Jahrgang:" HorizontalAlignment="Left" Height="28" Margin="10,2,0,0" VerticalAlignment="Top" Width="66" Grid.Row="1" Grid.RowSpan="2"/>
-        <GroupBox Header="Geschlecht" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,0,0" Height="79" Width="132" Grid.Row="2" Grid.RowSpan="2">
+        <GroupBox Name="gBGender" Header="Geschlecht" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,0,0" Height="79" Width="132" Grid.Row="2" Grid.RowSpan="2">
             <Grid HorizontalAlignment="Left" Height="69" Margin="0,0,-2,-12" VerticalAlignment="Top" Width="122">
                 <RadioButton Name="rBMale" Content="männlich" HorizontalAlignment="Left" Height="19" Margin="10,10,0,0" VerticalAlignment="Top" Width="102"/>
                 <RadioButton Name="rBFemale" Content="weiblich" HorizontalAlignment="Left" Height="25" Margin="10,34,0,0" VerticalAlignment="Top" Width="102"/>
@@ -35,7 +35,7 @@
             <ComboBoxItem Content="nicht gestartet"/>
             <ComboBoxItem Content="Unfall"/>
         </ComboBox>
-        <Button Content="Hinzufügen" HorizontalAlignment="Left" Height="85" Grid.Row="3" VerticalAlignment="Top" Width="296" FontSize="24" Background="White" BorderBrush="White" OpacityMask="Black" Margin="0,65,0,0" Grid.RowSpan="2"/>
+        <Button Name="btnAdd" Content="Hinzufügen" HorizontalAlignment="Left" Height="85" Grid.Row="3" VerticalAlignment="Top" Width="296" FontSize="24" Background="White" BorderBrush="White" OpacityMask="Black" Margin="0,65,0,0" Grid.RowSpan="2" Click="btnAdd_Click"/>
 
     </Grid>
 </Window>

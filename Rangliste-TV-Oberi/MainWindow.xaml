@@ -10,8 +10,8 @@
         <Menu HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="631" Background="White" Grid.ColumnSpan="2">
             <MenuItem Header="Anwendung">
                 <MenuItem Name="menuItemErfassng" Header="Erfassung" Click="menuItemErfassng_Click"/>
-                <MenuItem Name="menuItemexport" Header="Datenbank als .csv-Datei eportieren"/>
-                <MenuItem Name="menuItemImport" Header=".csv-Datei Importieren"/>
+                <MenuItem Name="menuItemexport" Header="Datenbank als .csv-Datei exportieren"/>
+                <MenuItem Name="menuItemImport" Header=".csv-Datei importieren"/>
                 <MenuItem Name="menuItemEinstellungen" Header="Einstellungen" Click="menuItemEinstellungen_Click"/>
                 <MenuItem Name="menuItemClose" Header="Beenden" Click="menuItemClose_Click"/>
             </MenuItem>
