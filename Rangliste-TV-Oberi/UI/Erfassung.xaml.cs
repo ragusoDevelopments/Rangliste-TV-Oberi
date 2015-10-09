@@ -22,7 +22,7 @@ namespace Rangliste_TV_Oberi
     {
         private MainWindow main = (MainWindow)App.Current.MainWindow;
 
-        RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();     
+        RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
         int biggestStartnr;
 
         public Erfassung()
@@ -34,16 +34,43 @@ namespace Rangliste_TV_Oberi
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            this.lblWarning.Visibility = Visibility.Hidden;
 
+            string gender;
+            int yearOfBirth;
+
+            try
+            {
+                yearOfBirth = Convert.ToInt32(tBYear.Text);
+            }
+            catch (Exception)
+            {
+                this.lblWarning.Visibility = Visibility.Visible;
+                return;
+            }
+
+
+            if (rBMale.IsChecked == true)
+                gender = "male";
+            else if (rBFemale.IsChecked == true)
+                gender = "female";
+            else
+                return;
+
+            Businessobjects.SQLFunctions.addParticipant(tBName.Text, gender, yearOfBirth);
+
+
+            tBName.Text = "";
+            tBYear.Text = "";
+            rBMale.IsChecked = false;
+            rBFemale.IsChecked = false;
+            cBStatus.SelectedItem = -1;
+            
         }
 
 
 
-
-
-
-
-       private void Window_Closed(object sender, EventArgs e)
+        private void Window_Closed(object sender, EventArgs e)
         {
             main.erfassungIsOpen = false;
         }

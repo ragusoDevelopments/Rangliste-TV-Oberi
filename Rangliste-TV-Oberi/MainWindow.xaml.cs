@@ -34,6 +34,8 @@ namespace Rangliste_TV_Oberi
             erfassungIsOpen = true;
             #endregion
 
+            Businessobjects.SQLFunctions.fillCategoriesTable();
+            Businessobjects.SQLFunctions.fillStatusTable();
             listTable();//delete when finished
         }
 
@@ -42,17 +44,14 @@ namespace Rangliste_TV_Oberi
 
 
 
-
-
-
-        void listTable()
+        public void listTable()
         {
             IEnumerable<RL_Datacontext.Participants> parts = Businessobjects.SQLFunctions.listTable();
 
             foreach(var v in parts)
             {
                 ListViewItem item = new ListViewItem();
-                item.Content = v.Startnumber + " " + v.Id;
+                item.Content = v.Name;
                 ListView1.Items.Add(item);
             }
         }

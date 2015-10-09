@@ -1,9 +1,13 @@
 ﻿<Window x:Class="Rangliste_TV_Oberi.Erfassung"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Erfassung" Height="315" Width="312" WindowStartupLocation="Manual" WindowStyle="ToolWindow" Closed="Window_Closed" ShowInTaskbar="False" ResizeMode="NoResize"
+        Title="Erfassung" Height="315" Width="320" WindowStartupLocation="Manual" WindowStyle="ToolWindow" Closed="Window_Closed" ShowInTaskbar="False" ResizeMode="NoResize"
          >
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="37*"/>
             <RowDefinition Height="29*"/>
@@ -23,10 +27,10 @@
 
 
         </GroupBox>
-        <TextBox Name="tBName" HorizontalAlignment="Left" Height="20" Margin="115,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="176"/>
-        <TextBox Name="tBYear" HorizontalAlignment="Left" Height="20" Margin="115,6,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="176" Grid.Row="1" AllowDrop="True" BorderBrush="#FFB3ABAB"/>
+        <TextBox Name="tBName" HorizontalAlignment="Left" Height="20" Margin="115,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="176" Grid.ColumnSpan="2"/>
+        <TextBox Name="tBYear" HorizontalAlignment="Left" Height="20" Margin="115,6,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="176" Grid.Row="1" AllowDrop="True" BorderBrush="#FFB3ABAB" Grid.ColumnSpan="2"/>
         <Label Content="Status:" HorizontalAlignment="Left" Height="28" Margin="10,6,0,0" VerticalAlignment="Top" Width="66" Grid.Row="2"/>
-        <ComboBox Name="cBStatus" HorizontalAlignment="Left" Height="24" Margin="115,10,0,0" VerticalAlignment="Top" Width="64" Grid.Row="2">
+        <ComboBox Name="cBStatus" HorizontalAlignment="Left" Height="24" Margin="115,10,0,0" VerticalAlignment="Top" Width="64" Grid.Row="2" Grid.ColumnSpan="2">
             <ComboBoxItem Content="Aktiv"/>
             <ComboBoxItem Content="Ausser Konkurrenz"/>
             <ComboBoxItem Content="Disqualifiziert"/>
@@ -35,7 +39,8 @@
             <ComboBoxItem Content="nicht gestartet"/>
             <ComboBoxItem Content="Unfall"/>
         </ComboBox>
-        <Button Name="btnAdd" Content="Hinzufügen" HorizontalAlignment="Left" Height="85" Grid.Row="3" VerticalAlignment="Top" Width="296" FontSize="24" Background="White" BorderBrush="White" OpacityMask="Black" Margin="0,65,0,0" Grid.RowSpan="2" Click="btnAdd_Click"/>
+        <Button Name="btnAdd" Content="Hinzufügen" HorizontalAlignment="Left" Height="95" Grid.Row="3" VerticalAlignment="Top" Width="323" FontSize="24" Background="White" BorderBrush="White" OpacityMask="White" Margin="-9,65,0,0" Grid.RowSpan="2" Click="btnAdd_Click" Grid.ColumnSpan="2"/>
+        <Label Name="lblWarning" Content="Jahrgang: &#xD;&#xA;Ungültiges Zeichen" HorizontalAlignment="Left" Height="48" Margin="142,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="172" Background="White" Foreground="#FFE00000" Grid.ColumnSpan="2" BorderBrush="White" Visibility="Hidden"/>
 
     </Grid>
 </Window>

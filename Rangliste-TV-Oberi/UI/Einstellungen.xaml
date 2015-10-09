@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Einstellungen" Height="394.925" Width="588" WindowStyle="ToolWindow" Closed="Window_Closed" WindowStartupLocation="CenterScreen">
     <Grid>
-        <TreeView Margin="0,0,-10,0">
+        <TreeView>
             <TreeViewItem Header="Beim Start öffnen">
                 <CheckBox x:Name="chBErfassung" Content="Erfassung"/>
                 <CheckBox x:Name="chBEinstellungen" Content="Einstellungen"/>
@@ -16,7 +16,7 @@
                 <ComboBox x:Name="cBoxResultType" Height="23" Width="121" Margin="0,5,0,0" SelectedIndex="0">
                     <ComboBoxItem Content="Distanz" />
                     <ComboBoxItem Content="Zeit" />
-                    
+
                 </ComboBox>
             </TreeViewItem>
 
@@ -24,5 +24,6 @@
                 <Button Content="Speichern" />
             </TreeViewItem>
         </TreeView>
+        <Button Content="Kategorien ändern" HorizontalAlignment="Left" Height="30" Margin="199,22,0,0" VerticalAlignment="Top" Width="121"/>
     </Grid>
 </Window>
