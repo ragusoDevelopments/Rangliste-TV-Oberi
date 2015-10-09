@@ -28,26 +28,31 @@ namespace Rangliste_TV_Oberi
         {
             #region initStuff
             InitializeComponent();
+
             Erfassung erfassung = new Erfassung();
             erfassung.Show();
             erfassungIsOpen = true;
             #endregion
 
-            listTable();
-
-
+            listTable();//delete when finished
         }
+
+
+
+
+
+
+
 
 
         void listTable()
         {
-            IEnumerable<RL_Datacontext.Categories> cat = Businessobjects.SQLFunctions.listTable();
+            IEnumerable<RL_Datacontext.Participants> parts = Businessobjects.SQLFunctions.listTable();
 
-            ListViewItem item = new ListViewItem();
-
-            foreach(var v in cat)
+            foreach(var v in parts)
             {
-                item.Content = v.Category;
+                ListViewItem item = new ListViewItem();
+                item.Content = v.Startnumber + " " + v.Id;
                 ListView1.Items.Add(item);
             }
         }
