@@ -19,17 +19,63 @@ namespace Rangliste_TV_Oberi
     /// </summary>
     public partial class Einstellungen : Window
     {
-        
+
         public Einstellungen()
         {
             InitializeComponent();
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        //Adds a new discipline to the database
+        private void btnDiscSave_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow main = (MainWindow)App.Current.MainWindow;
-            main.einstellungenIsOpen = false;
+            if (tBDisciplineName.Text == "" || tBMinRes.Text == "" || tBResIncr.Text == "" || tBPtsIncr.Text == "")
+                return;
+
+            float minRes = 0;
+            float resIncr = 0;
+            int minPts = 0;
+            int ptsIncr = 0;
+            bool resIsDistance;
+
+            if (cBoxResultType.SelectedIndex == 0)
+                resIsDistance = true;
+            else
+                resIsDistance = false;
+            tBMinRes.Text = tBMinRes.Text.Replace(".", ",");
+            tBResIncr.Text = tBResIncr.Text.Replace(".", ",");
+            try
+            {
+                minRes = (float) Convert.ToDouble(tBMinRes.Text);
+                resIncr = (float)Convert.ToDouble(tBResIncr.Text);
+                minPts = Convert.ToInt32(tBMinPts.Text);
+                ptsIncr = Convert.ToInt32(tBPtsIncr.Text);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return;
+            }
+
+
+
+
+            RL_Datacontext.Disciplines disc = Businessobjects.SQLFunctions.addDiscipline(tBDisciplineName.Text);
+            Businessobjects.SQLFunctions.addPointsToDiscipline(disc, minRes, resIncr, minPts, ptsIncr, resIsDistance);
+
+            tBDisciplineName.Text = "";
+            foclost(tBDisciplineName, "Name");
+            tBMinRes.Text = "";
+            foclost(tBMinRes, "Mindestleistung");
+            tBResIncr.Text = "";
+            foclost(tBResIncr, "Ergebnisabstufung");
+            tBMinPts.Text = "";
+            foclost(tBMinPts, "Minimalpunktzahl");
+            tBPtsIncr.Text = "";
+            foclost(tBPtsIncr, "Punkteabstufung");
+            cBoxResultType.SelectedIndex = 0;
         }
+        
 
 
 
@@ -39,7 +85,8 @@ namespace Rangliste_TV_Oberi
 
 
 
-        #region explainingtexts appereance and disappereance
+
+        #region explainingtext appereance and disappereance
         //gotfoc + foclost handle the appereance and disappereance of the grey explaining text in Textboxes
         private void gotfoc(TextBox tB)
         {
@@ -63,11 +110,11 @@ namespace Rangliste_TV_Oberi
         private void tBDisciplineName_GotFocus(object sender, RoutedEventArgs e)
         {
             //OMFG, That fucking works!!!
-            if(tBDisciplineName.Foreground.ToString() == "#FF7E7E7E")
+            if (tBDisciplineName.Foreground.ToString() == "#FF7E7E7E")
             {
                 gotfoc(tBDisciplineName);
             }
-            
+
         }
 
         private void tBDisciplineName_LostFocus(object sender, RoutedEventArgs e)
@@ -75,27 +122,59 @@ namespace Rangliste_TV_Oberi
             foclost(tBDisciplineName, "Disziplin");
         }
 
-        private void tBMax_GotFocus(object sender, RoutedEventArgs e)
+        private void tBMinPts_GotFocus(object sender, RoutedEventArgs e)
         {
-            gotfoc(tBMax);
+            gotfoc(tBMinPts);
         }
 
-        private void tBMax_LostFocus(object sender, RoutedEventArgs e)
+        private void tBMinPts_LostFocus(object sender, RoutedEventArgs e)
         {
-            foclost(tBMax, "Höchstleistung");
+            foclost(tBMinPts, "Minimalpunktzahl");
         }
 
-        private void tBMin_GotFocus(object sender, RoutedEventArgs e)
+        private void tBMinRes_GotFocus(object sender, RoutedEventArgs e)
         {
-            gotfoc(tBMin);
+            gotfoc(tBMinRes);
         }
 
-        private void tBMin_LostFocus(object sender, RoutedEventArgs e)
+        private void tBMinRes_LostFocus(object sender, RoutedEventArgs e)
         {
-            foclost(tBMin, "Mindestleistung");
+            foclost(tBMinRes, "Schlechtestes Ergebnis");
+        }
+
+        private void tBResIncr_GotFocus(object sender, RoutedEventArgs e)
+        {
+            gotfoc(tBResIncr);
+        }
+
+        private void tBResIncr_LostFocus(object sender, RoutedEventArgs e)
+        {
+            foclost(tBResIncr, "Ergebnisabstufung");
+        }
+
+        private void tBPtsIncr_GotFocus(object sender, RoutedEventArgs e)
+        {
+            gotfoc(tBPtsIncr);
+        }
+
+        private void tBPtsIncr_LostFocus(object sender, RoutedEventArgs e)
+        {
+            foclost(tBPtsIncr, "Punkteabstufung");
         }
 
         #endregion
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            MainWindow main = (MainWindow)App.Current.MainWindow;
+            main.einstellungenIsOpen = false;
+        }
+
+
+
+
+
+
 
     }
 }

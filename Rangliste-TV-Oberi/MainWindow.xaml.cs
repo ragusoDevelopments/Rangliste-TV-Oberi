@@ -32,6 +32,9 @@ namespace Rangliste_TV_Oberi
             Erfassung erfassung = new Erfassung();
             erfassung.Show();
             erfassungIsOpen = true;
+            Einstellungen einstellungen = new Einstellungen();
+            einstellungen.Show();
+            einstellungenIsOpen = true;
             #endregion
 
             Businessobjects.SQLFunctions.fillCategoriesTable();
@@ -46,13 +49,13 @@ namespace Rangliste_TV_Oberi
         {
             RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
 
-            IEnumerable<RL_Datacontext.Status> parts = from p in dc.Status
+            IEnumerable<RL_Datacontext.DisciplinePoints> parts = from p in dc.DisciplinePoints
                                                        select p;
 
             foreach(var v in parts)
             {
                 ListViewItem item = new ListViewItem();
-                item.Content = v.SelectedIndex.ToString() + " " + v.Status1;
+                item.Content = v.Result.ToString() + " " + v.Points;
                 ListView1.Items.Add(item);
             }
 
