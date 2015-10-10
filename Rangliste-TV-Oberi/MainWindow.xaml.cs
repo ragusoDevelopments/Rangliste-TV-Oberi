@@ -42,8 +42,6 @@ namespace Rangliste_TV_Oberi
 
 
 
-
-
         public void listTable()
         {
             IEnumerable<RL_Datacontext.Participants> parts = Businessobjects.SQLFunctions.listTable();

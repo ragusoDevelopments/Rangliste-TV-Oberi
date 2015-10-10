@@ -23,14 +23,11 @@ namespace Rangliste_TV_Oberi
         private MainWindow main = (MainWindow)App.Current.MainWindow;
 
         RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
-        int biggestStartnr;
 
         public Erfassung()
         {
             InitializeComponent();
-            biggestStartnr = Businessobjects.SQLFunctions.checkStartnumbers();
         }
-
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -67,8 +64,6 @@ namespace Rangliste_TV_Oberi
             cBStatus.SelectedItem = -1;
             
         }
-
-
 
         private void Window_Closed(object sender, EventArgs e)
         {
