@@ -10,8 +10,8 @@
             </TreeViewItem>
             <TreeViewItem Header="Disziplin hinzufügen">
                 <TextBox Text="Name" x:Name="tBDisciplineName" Height="23" Width="121" Margin="0,5,0,0" GotFocus="tBDisciplineName_GotFocus" LostFocus="tBDisciplineName_LostFocus" Foreground="#FF7E7E7E" />
-                <TextBox Text="Höchstleistung" x:Name="tBMax" Height="23" Width="121" Margin="0,5,0,0" Foreground="#FF7E7E7E"/>
-                <TextBox Text="Mindestleistung" x:Name="tBMin" Height="23" Width="121" Margin="0,5,0,0" Foreground="#FF7E7E7E"/>
+                <TextBox Text="Höchstleistung" x:Name="tBMax" Height="23" Width="121" Margin="0,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMax_GotFocus" LostFocus="tBMax_LostFocus"/>
+                <TextBox Text="Mindestleistung" x:Name="tBMin" Height="23" Width="121" Margin="0,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMin_GotFocus" LostFocus="tBMin_LostFocus"/>
                 <ComboBox x:Name="cBoxResultType" Height="23" Width="121" Margin="0,5,0,0" SelectedIndex="0">
                     <ComboBoxItem Content="Distanz"/>
                     <ComboBoxItem Content="Zeit" />

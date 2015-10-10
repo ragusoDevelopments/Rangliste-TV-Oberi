@@ -44,14 +44,19 @@ namespace Rangliste_TV_Oberi
 
         public void listTable()
         {
-            IEnumerable<RL_Datacontext.Participants> parts = Businessobjects.SQLFunctions.listTable();
+            RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
+
+            IEnumerable<RL_Datacontext.Status> parts = from p in dc.Status
+                                                       select p;
 
             foreach(var v in parts)
             {
                 ListViewItem item = new ListViewItem();
-                item.Content = v.Name;
+                item.Content = v.SelectedIndex.ToString() + " " + v.Status1;
                 ListView1.Items.Add(item);
             }
+
+           
         }
 
 

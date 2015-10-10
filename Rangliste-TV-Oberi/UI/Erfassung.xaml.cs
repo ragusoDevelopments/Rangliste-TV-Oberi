@@ -54,14 +54,15 @@ namespace Rangliste_TV_Oberi
             else
                 return;
 
-            Businessobjects.SQLFunctions.addParticipant(tBName.Text, gender, yearOfBirth);
+            Businessobjects.SQLFunctions.addParticipant(tBName.Text, gender, yearOfBirth, cBStatus.SelectedIndex);
 
 
             tBName.Text = "";
             tBYear.Text = "";
             rBMale.IsChecked = false;
             rBFemale.IsChecked = false;
-            cBStatus.SelectedItem = -1;
+            cBStatus.SelectedIndex = 0;
+
             
         }
 
