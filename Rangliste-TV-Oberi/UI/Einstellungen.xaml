@@ -8,13 +8,12 @@
                 <CheckBox x:Name="chBErfassung" Content="Erfassung"/>
                 <CheckBox x:Name="chBEinstellungen" Content="Einstellungen"/>
             </TreeViewItem>
-
             <TreeViewItem Header="Disziplin hinzufügen">
-                <TextBox x:Name="tBDisciplineName" Height="23" Width="121" />
-                <TextBox x:Name="tBMax" Height="23" Width="121" Margin="0,5,0,0"/>
-                <TextBox x:Name="tBMin" Height="23" Width="121" Margin="0,5,0,0"/>
+                <TextBox Text="Name" x:Name="tBDisciplineName" Height="23" Width="121" Margin="0,5,0,0" GotFocus="tBDisciplineName_GotFocus" LostFocus="tBDisciplineName_LostFocus" Foreground="#FF7E7E7E" />
+                <TextBox Text="Höchstleistung" x:Name="tBMax" Height="23" Width="121" Margin="0,5,0,0" Foreground="#FF7E7E7E"/>
+                <TextBox Text="Mindestleistung" x:Name="tBMin" Height="23" Width="121" Margin="0,5,0,0" Foreground="#FF7E7E7E"/>
                 <ComboBox x:Name="cBoxResultType" Height="23" Width="121" Margin="0,5,0,0" SelectedIndex="0">
-                    <ComboBoxItem Content="Distanz" />
+                    <ComboBoxItem Content="Distanz"/>
                     <ComboBoxItem Content="Zeit" />
 
                 </ComboBox>

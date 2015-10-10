@@ -31,5 +31,21 @@ namespace Rangliste_TV_Oberi
             main.einstellungenIsOpen = false;
         }
 
+        private void tBDisciplineName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //OMFG, That fucking works!!!
+            if(tBDisciplineName.Foreground.ToString() == "#FF7E7E7E")
+            {
+                tBDisciplineName.Text = "";
+                tBDisciplineName.Foreground = Brushes.Black;
+            }
+        }
+
+        private void tBDisciplineName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.Title = "focus lost";
+        }
+
+
     }
 }
