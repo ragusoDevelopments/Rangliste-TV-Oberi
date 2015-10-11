@@ -1,33 +1,46 @@
 ﻿<Window x:Class="Rangliste_TV_Oberi.Einstellungen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Einstellungen" Height="394.925" Width="588" WindowStyle="ToolWindow" Closed="Window_Closed" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
+        Title="Einstellungen" Height="503.925" Width="718" WindowStyle="ToolWindow" Closed="Window_Closed" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TreeView>
-            <TreeViewItem Header="Beim Start öffnen">
-                <CheckBox x:Name="chBErfassung" Content="Erfassung"/>
-                <CheckBox x:Name="chBEinstellungen" Content="Einstellungen"/>
-            </TreeViewItem>
-            <TreeViewItem Header="Disziplin hinzufügen" BorderBrush="White" OpacityMask="White">
-                <TextBox Text="Name" x:Name="tBDisciplineName" Height="23" Width="127" Margin="0,5,0,0" GotFocus="tBDisciplineName_GotFocus" LostFocus="tBDisciplineName_LostFocus" Foreground="#FF7E7E7E" />
-                <TextBox Text="Schlechtestes Ergebnis" x:Name="tBMinRes" Height="23" Width="127" Margin="0,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinRes_GotFocus" LostFocus="tBMinRes_LostFocus"/>
-                <TextBox Text="Ergebnisabstufung" x:Name="tBResIncr" Height="23" Width="127" Margin="0,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBResIncr_GotFocus" LostFocus="tBResIncr_LostFocus"/>
-                <TextBox Text="Minimalpunktzahl" x:Name="tBMinPts" Height="23" Width="127" Margin="0,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinPts_GotFocus" LostFocus="tBMinPts_LostFocus"/>
-                <TextBox Text="Punkteabstufung" x:Name="tBPtsIncr" Height="23" Width="127" Margin="0,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBPtsIncr_GotFocus" LostFocus="tBPtsIncr_LostFocus"/>
-                <ComboBox x:Name="cBoxResultType" Height="23" Width="126" Margin="0,5,0,0" SelectedIndex="0">
-                    <ComboBoxItem Content="Distanz"/>
-                    <ComboBoxItem Content="Zeit" />
-                </ComboBox>
-                <Button x:Name="btnDiscSave" Content="Save" Margin="0,0,0,0" Width="125" Height="26" BorderBrush="White" OpacityMask="White" Background="White" Click="btnDiscSave_Click"/>
-            </TreeViewItem>
+        <TreeView Margin="0,0,511,0" SelectedItemChanged="TreeView_SelectedItemChanged">
+            <TreeViewItem Header="Disziplin hinzufügen" BorderBrush="White" OpacityMask="White" GotFocus="TreeViewItem_GotFocus"/>
+            <TreeViewItem Name="tVINewDiscSet" Header="Neuen Disziplin-Satz erstellen" />
+        </TreeView>
 
-        </TreeView>
-        <TreeView HorizontalAlignment="Left" Height="365" VerticalAlignment="Top" Width="290" Grid.Column="1">
-            <TreeViewItem Header="Neuen Disziplin-Satz erstellen"></TreeViewItem>
-        </TreeView>
+        <Label Content="Disziplinen" Width="70" Margin="248,0,391,425"/>
+        <ListBox Name="lBDisciplines" HorizontalAlignment="Left" Height="441" VerticalAlignment="Top" Width="176" Margin="198,33,0,0">
+
+        </ListBox>
+        <WrapPanel Name ="wPMale" Margin="374,0,195,245" Visibility="Hidden">
+            <Label Content="Knaben" Width="54" Margin="41,0,0,0"/>
+            <TextBox Text="Name" x:Name="tBDisciplineName" Height="23" Width="127" Margin="5,8,0,0" GotFocus="tBDisciplineName_GotFocus" LostFocus="tBDisciplineName_LostFocus" Foreground="#FF7E7E7E" />
+            <TextBox Text="Schlechtestes Ergebnis" x:Name="tBMinRes" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinRes_GotFocus" LostFocus="tBMinRes_LostFocus"/>
+            <TextBox Text="Ergebnisabstufung" x:Name="tBResIncr" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBResIncr_GotFocus" LostFocus="tBResIncr_LostFocus"/>
+            <TextBox Text="Minimalpunktzahl" x:Name="tBMinPts" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinPts_GotFocus" LostFocus="tBMinPts_LostFocus"/>
+            <TextBox Text="Punkteabstufung" x:Name="tBPtsIncr" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBPtsIncr_GotFocus" LostFocus="tBPtsIncr_LostFocus"/>
+            <ComboBox x:Name="cBoxResultType" Height="23" Width="127" Margin="5,5,0,0" SelectedIndex="0">
+                <ComboBoxItem Content="Distanz"/>
+                <ComboBoxItem Content="Zeit" />
+            </ComboBox>
+        </WrapPanel>
+
+        <WrapPanel Name="wPFemale" Margin="374,234,195,0" Visibility="Hidden">
+            <Label Content="Mädchen" Width="61" Margin="37,0,0,0"/>
+            <TextBox Text="Name" x:Name="tBDisciplineNameF" Height="23" Width="127" Margin="5,8,0,0" Foreground="#FF7E7E7E" GotFocus="tBDisciplineNameF_GotFocus" LostFocus="tBDisciplineNameF_LostFocus" />
+            <TextBox Text="Schlechtestes Ergebnis" x:Name="tBMinResF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinResF_GotFocus" LostFocus="tBMinResF_LostFocus"/>
+            <TextBox Text="Ergebnisabstufung" x:Name="tBResIncrF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBResIncrF_GotFocus" LostFocus="tBResIncrF_LostFocus"/>
+            <TextBox Text="Minimalpunktzahl" x:Name="tBMinPtsF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinPtsF_GotFocus" LostFocus="tBMinPtsF_LostFocus"/>
+            <TextBox Text="Punkteabstufung" x:Name="tBPtsIncrF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBPtsIncrF_GotFocus" LostFocus="tBPtsIncrF_LostFocus"/>
+            <ComboBox x:Name="cBoxResultTypeF" Height="23" Width="127" Margin="5,5,0,0" SelectedIndex="0">
+                <ComboBoxItem Content="Distanz"/>
+                <ComboBoxItem Content="Zeit" />
+            </ComboBox>
+            <Button Content="Save" Margin="5,0,0,0" Width="127" Height="26" BorderBrush="White" OpacityMask="White" Background="White" Click="btnDiscSave_Click"/>
+        </WrapPanel>
+
     </Grid>
 </Window>

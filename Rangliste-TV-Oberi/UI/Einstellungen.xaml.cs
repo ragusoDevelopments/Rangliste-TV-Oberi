@@ -23,12 +23,43 @@ namespace Rangliste_TV_Oberi
         public Einstellungen()
         {
             InitializeComponent();
+            this.Topmost = true; //testpurpose
         }
 
         //Adds a new discipline to the database
         private void btnDiscSave_Click(object sender, RoutedEventArgs e)
         {
-            if (tBDisciplineName.Text == "" || tBMinRes.Text == "" || tBResIncr.Text == "" || tBPtsIncr.Text == "")
+            RL_Datacontext.Disciplines disc = Businessobjects.SQLFunctions.addDiscipline(tBDisciplineNameF.Text);
+
+            addResultsToDiscipline(tBDisciplineName, tBMinRes, tBResIncr, tBPtsIncr, cBoxResultType, tBMinPts, true, disc);
+            addResultsToDiscipline(tBDisciplineNameF, tBMinResF, tBResIncrF, tBPtsIncrF, cBoxResultTypeF, tBMinPtsF, false, disc);
+
+            MainWindow main = (MainWindow)App.Current.MainWindow;
+            main.listTable();
+
+        }
+
+
+        private void filllBDiscipline()
+        {
+            lBDisciplines.Items.Clear();
+
+            IEnumerable<RL_Datacontext.Disciplines> discs = Businessobjects.SQLFunctions.returnDisciplines();
+
+            foreach (var v in discs)
+            {
+                ListBoxItem newItem = new ListBoxItem();
+                CheckBox ch = new CheckBox();
+                ch.Content = v.Discipline;
+                newItem.Content = ch;
+
+                lBDisciplines.Items.Add(newItem);
+            }
+        }
+
+        private void addResultsToDiscipline(TextBox tBDiscName, TextBox tBMinResult, TextBox tBResIncrement, TextBox tBPtsIncrement, ComboBox cBResType, TextBox tBMinPoints, bool male, RL_Datacontext.Disciplines disc)
+        {
+            if (tBDiscName.Text == "" || tBMinResult.Text == "" || tBResIncrement.Text == "" || tBPtsIncrement.Text == "")
                 return;
 
             float minRes = 0;
@@ -37,18 +68,20 @@ namespace Rangliste_TV_Oberi
             int ptsIncr = 0;
             bool resIsDistance;
 
-            if (cBoxResultType.SelectedIndex == 0)
+            if (cBResType.SelectedIndex == 0)
                 resIsDistance = true;
             else
                 resIsDistance = false;
-            tBMinRes.Text = tBMinRes.Text.Replace(".", ",");
-            tBResIncr.Text = tBResIncr.Text.Replace(".", ",");
+
+            tBMinResult.Text = tBMinResult.Text.Replace(".", ",");
+            tBResIncrement.Text = tBResIncrement.Text.Replace(".", ",");
+
             try
             {
-                minRes = (float) Convert.ToDouble(tBMinRes.Text);
-                resIncr = (float)Convert.ToDouble(tBResIncr.Text);
-                minPts = Convert.ToInt32(tBMinPts.Text);
-                ptsIncr = Convert.ToInt32(tBPtsIncr.Text);
+                minRes = (float)Convert.ToDouble(tBMinResult.Text);
+                resIncr = (float)Convert.ToDouble(tBResIncrement.Text);
+                minPts = Convert.ToInt32(tBMinPoints.Text);
+                ptsIncr = Convert.ToInt32(tBPtsIncrement.Text);
 
             }
             catch (Exception ex)
@@ -58,32 +91,28 @@ namespace Rangliste_TV_Oberi
             }
 
 
+            Businessobjects.SQLFunctions.addPointsToDiscipline(disc, minRes, resIncr, minPts, ptsIncr, resIsDistance, male);
 
+            filllBDiscipline();
 
-            RL_Datacontext.Disciplines disc = Businessobjects.SQLFunctions.addDiscipline(tBDisciplineName.Text);
-            Businessobjects.SQLFunctions.addPointsToDiscipline(disc, minRes, resIncr, minPts, ptsIncr, resIsDistance);
-
-            tBDisciplineName.Text = "";
-            foclost(tBDisciplineName, "Name");
-            tBMinRes.Text = "";
-            foclost(tBMinRes, "Mindestleistung");
-            tBResIncr.Text = "";
-            foclost(tBResIncr, "Ergebnisabstufung");
-            tBMinPts.Text = "";
-            foclost(tBMinPts, "Minimalpunktzahl");
-            tBPtsIncr.Text = "";
-            foclost(tBPtsIncr, "Punkteabstufung");
-            cBoxResultType.SelectedIndex = 0;
+            tBDiscName.Text = "";
+            foclost(tBDiscName, "Name");
+            tBMinResult.Text = "";
+            foclost(tBMinResult, "Mindestleistung");
+            tBResIncrement.Text = "";
+            foclost(tBResIncrement, "Ergebnisabstufung");
+            tBMinPoints.Text = "";
+            foclost(tBMinPoints, "Minimalpunktzahl");
+            tBPtsIncrement.Text = "";
+            foclost(tBPtsIncrement, "Punkteabstufung");
+            cBResType.SelectedIndex = 0;
         }
-        
 
-
-
-
-
-
-
-
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            MainWindow main = (MainWindow)App.Current.MainWindow;
+            main.einstellungenIsOpen = false;
+        }
 
 
         #region explainingtext appereance and disappereance
@@ -162,13 +191,73 @@ namespace Rangliste_TV_Oberi
             foclost(tBPtsIncr, "Punkteabstufung");
         }
 
+        private void tBDisciplineNameF_GotFocus(object sender, RoutedEventArgs e)
+        {
+            gotfoc(tBDisciplineNameF);
+        }
+
+        private void tBDisciplineNameF_LostFocus(object sender, RoutedEventArgs e)
+        {
+            foclost(tBDisciplineNameF, "Name");
+        }
+
+        private void tBMinResF_GotFocus(object sender, RoutedEventArgs e)
+        {
+            gotfoc(tBMinResF);
+        }
+
+        private void tBMinResF_LostFocus(object sender, RoutedEventArgs e)
+        {
+            foclost(tBMinResF, "Schlechtestes Ergebnis");
+        }
+
+        private void tBResIncrF_GotFocus(object sender, RoutedEventArgs e)
+        {
+            gotfoc(tBResIncrF);
+        }
+
+        private void tBResIncrF_LostFocus(object sender, RoutedEventArgs e)
+        {
+            foclost(tBResIncrF, "Ergebnisabstufung");
+        }
+
+        private void tBMinPtsF_GotFocus(object sender, RoutedEventArgs e)
+        {
+            gotfoc(tBMinPtsF);
+
+        }
+
+        private void tBMinPtsF_LostFocus(object sender, RoutedEventArgs e)
+        {
+            foclost(tBMinPtsF, "Minimalpunktzahl");
+        }
+
+        private void tBPtsIncrF_GotFocus(object sender, RoutedEventArgs e)
+        {
+            gotfoc(tBPtsIncrF);
+        }
+
+        private void tBPtsIncrF_LostFocus(object sender, RoutedEventArgs e)
+        {
+            foclost(tBPtsIncrF, "Punkteabstufung");
+        }
         #endregion
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void TreeViewItem_GotFocus(object sender, RoutedEventArgs e)
         {
-            MainWindow main = (MainWindow)App.Current.MainWindow;
-            main.einstellungenIsOpen = false;
+            wPMale.Visibility = Visibility.Visible;
+            wPFemale.Visibility = Visibility.Visible;
         }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            wPMale.Visibility = Visibility.Hidden;
+            wPFemale.Visibility = Visibility.Hidden;
+        }
+
+
+        
+
 
 
 

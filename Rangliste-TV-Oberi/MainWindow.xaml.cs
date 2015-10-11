@@ -44,13 +44,13 @@ namespace Rangliste_TV_Oberi
 
 
 
-
+        //testpurpose
         public void listTable()
         {
             RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
 
-            IEnumerable<RL_Datacontext.DisciplinePoints> parts = from p in dc.DisciplinePoints
-                                                       select p;
+            IEnumerable<RL_Datacontext.MaleDisciplinePoints> parts = from p in dc.MaleDisciplinePoints
+                                                                     select p;
 
             foreach(var v in parts)
             {
@@ -59,18 +59,19 @@ namespace Rangliste_TV_Oberi
                 ListView1.Items.Add(item);
             }
 
+
+            IEnumerable<RL_Datacontext.FemaleDisciplinePoints> partsF = from p in dc.FemaleDisciplinePoints
+                                                                        select p;
+
+            foreach (var v in partsF)
+            {
+                ListViewItem item = new ListViewItem();
+                item.Content = v.Result.ToString() + " " + v.Points;
+                ListView1_Copy.Items.Add(item);
+            }
+
            
         }
-
-
-
-
-
-
-
-
-
-
 
 
 
