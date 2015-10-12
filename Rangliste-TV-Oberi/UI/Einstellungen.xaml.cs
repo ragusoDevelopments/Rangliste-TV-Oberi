@@ -29,10 +29,10 @@ namespace Rangliste_TV_Oberi
         //Adds a new discipline to the database
         private void btnDiscSave_Click(object sender, RoutedEventArgs e)
         {
-            RL_Datacontext.Disciplines disc = Businessobjects.SQLFunctions.addDiscipline(tBDisciplineNameF.Text);
+            
 
-            addResultsToDiscipline(tBDisciplineName, tBMinRes, tBResIncr, tBPtsIncr, cBoxResultType, tBMinPts, true, disc);
-            addResultsToDiscipline(tBDisciplineNameF, tBMinResF, tBResIncrF, tBPtsIncrF, cBoxResultTypeF, tBMinPtsF, false, disc);
+            addResultsToDiscipline(tBDisciplineName, tBMinRes, tBResIncr, tBPtsIncr, cBoxResultType, tBMinPts, true);
+            addResultsToDiscipline(tBDisciplineName, tBMinResF, tBResIncrF, tBPtsIncrF, cBoxResultTypeF, tBMinPtsF, false);
 
             MainWindow main = (MainWindow)App.Current.MainWindow;
             main.listTable();
@@ -46,21 +46,24 @@ namespace Rangliste_TV_Oberi
 
             IEnumerable<RL_Datacontext.Disciplines> discs = Businessobjects.SQLFunctions.returnDisciplines();
 
+
             foreach (var v in discs)
             {
                 ListBoxItem newItem = new ListBoxItem();
-                CheckBox ch = new CheckBox();
-                ch.Content = v.Discipline;
-                newItem.Content = ch;
+                newItem.Content = v.Discipline;
 
                 lBDisciplines.Items.Add(newItem);
             }
         }
 
-        private void addResultsToDiscipline(TextBox tBDiscName, TextBox tBMinResult, TextBox tBResIncrement, TextBox tBPtsIncrement, ComboBox cBResType, TextBox tBMinPoints, bool male, RL_Datacontext.Disciplines disc)
+        private void addResultsToDiscipline(TextBox tBDiscName, TextBox tBMinResult, TextBox tBResIncrement, TextBox tBPtsIncrement, ComboBox cBResType, TextBox tBMinPoints, bool male)
         {
-            if (tBDiscName.Text == "" || tBMinResult.Text == "" || tBResIncrement.Text == "" || tBPtsIncrement.Text == "")
+            if (tBDiscName.Foreground.ToString() == "#FF7E7E7E" || tBMinResult.Foreground.ToString() == "#FF7E7E7E" || tBResIncrement.Foreground.ToString() == "#FF7E7E7E" || tBPtsIncrement.Foreground.ToString() == "#FF7E7E7E")
+            {
+                cBoxResultType.SelectedIndex = 0;
+                cBoxResultTypeF.SelectedIndex = 0;
                 return;
+            }
 
             float minRes = 0;
             float resIncr = 0;
@@ -86,11 +89,11 @@ namespace Rangliste_TV_Oberi
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.ToString());//testpurpose
                 return;
             }
 
-
+            RL_Datacontext.Disciplines disc = Businessobjects.SQLFunctions.addDiscipline(tBDiscName.Text);
             Businessobjects.SQLFunctions.addPointsToDiscipline(disc, minRes, resIncr, minPts, ptsIncr, resIsDistance, male);
 
             filllBDiscipline();
@@ -107,6 +110,23 @@ namespace Rangliste_TV_Oberi
             foclost(tBPtsIncrement, "Punkteabstufung");
             cBResType.SelectedIndex = 0;
         }
+
+        private void btnAddDiscsToSet_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ListBoxItem item in lBDisciplines.Items)
+            {
+                if (item.IsSelected)
+                {
+                    ListBoxItem newItem = new ListBoxItem();
+                    newItem.Content = item.Content;
+                    lBDiscSet.Items.Add(newItem);
+                }
+            }
+        }
+
+
+
+
 
         private void Window_Closed(object sender, EventArgs e)
         {
@@ -191,16 +211,6 @@ namespace Rangliste_TV_Oberi
             foclost(tBPtsIncr, "Punkteabstufung");
         }
 
-        private void tBDisciplineNameF_GotFocus(object sender, RoutedEventArgs e)
-        {
-            gotfoc(tBDisciplineNameF);
-        }
-
-        private void tBDisciplineNameF_LostFocus(object sender, RoutedEventArgs e)
-        {
-            foclost(tBDisciplineNameF, "Name");
-        }
-
         private void tBMinResF_GotFocus(object sender, RoutedEventArgs e)
         {
             gotfoc(tBMinResF);
@@ -241,6 +251,16 @@ namespace Rangliste_TV_Oberi
         {
             foclost(tBPtsIncrF, "Punkteabstufung");
         }
+
+        private void tBDiscSetName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            gotfoc(tBDiscSetName);
+        }
+
+        private void tBDiscSetName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            foclost(tBDiscSetName, "Name");
+        }
         #endregion
 
         private void TreeViewItem_GotFocus(object sender, RoutedEventArgs e)
@@ -249,14 +269,43 @@ namespace Rangliste_TV_Oberi
             wPFemale.Visibility = Visibility.Visible;
         }
 
+        private void tVINewDiscSet_GotFocus(object sender, RoutedEventArgs e)
+        {
+            wPDiscSet.Visibility = Visibility.Visible;
+        }
+
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             wPMale.Visibility = Visibility.Hidden;
             wPFemale.Visibility = Visibility.Hidden;
+            wPDiscSet.Visibility = Visibility.Hidden;
         }
 
+        private void btnDiscSetSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (tBDiscSetName.Foreground.ToString() == "#FF7E7E7E" || lBDiscSet.Items.Count == 0)
+                return;
+
+            string[] disciplines = null;
+            int count = 0;
+
+            foreach(ListBoxItem item in lBDiscSet.Items)
+            {
+                disciplines[count] = item.Content.ToString();
+                count++;
+            }
+
+            Businessobjects.SQLFunctions.addDiscSet(tBDiscSetName.Text, disciplines);
+
+        }
 
         
+
+       
+
+
+
+
 
 
 

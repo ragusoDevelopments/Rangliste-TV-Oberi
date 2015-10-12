@@ -59,7 +59,7 @@ namespace Rangliste_TV_Oberi
                 ListView1.Items.Add(item);
             }
 
-
+            /*
             IEnumerable<RL_Datacontext.FemaleDisciplinePoints> partsF = from p in dc.FemaleDisciplinePoints
                                                                         select p;
 
@@ -68,7 +68,7 @@ namespace Rangliste_TV_Oberi
                 ListViewItem item = new ListViewItem();
                 item.Content = v.Result.ToString() + " " + v.Points;
                 ListView1_Copy.Items.Add(item);
-            }
+            }*/
 
            
         }
