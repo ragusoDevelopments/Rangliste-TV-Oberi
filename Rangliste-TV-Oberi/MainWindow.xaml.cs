@@ -37,8 +37,8 @@ namespace Rangliste_TV_Oberi
             einstellungenIsOpen = true;
             #endregion
 
-            Businessobjects.SQLFunctions.fillCategoriesTable();
-            Businessobjects.SQLFunctions.fillStatusTable();
+            Businessobjects.SQLAddAndReturnFunctions.fillCategoriesTable();
+            Businessobjects.SQLAddAndReturnFunctions.fillStatusTable();
             listTable();//delete when finished
         }
 
@@ -49,13 +49,13 @@ namespace Rangliste_TV_Oberi
         {
             RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
 
-            IEnumerable<RL_Datacontext.MaleDisciplinePoints> parts = from p in dc.MaleDisciplinePoints
+            IEnumerable<RL_Datacontext.DisciplinesFromSet> parts = from p in dc.DisciplinesFromSet
                                                                      select p;
 
             foreach(var v in parts)
             {
                 ListViewItem item = new ListViewItem();
-                item.Content = v.Result.ToString() + " " + v.Points;
+                item.Content = v.Discipline;
                 ListView1.Items.Add(item);
             }
 

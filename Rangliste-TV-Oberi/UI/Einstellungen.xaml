@@ -7,7 +7,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TreeView Margin="0,0,511,0" SelectedItemChanged="TreeView_SelectedItemChanged">
-            <TreeViewItem Header="Disziplin hinzufügen" BorderBrush="White" OpacityMask="White" GotFocus="TreeViewItem_GotFocus"/>
+            <TreeViewItem Header="Disziplin hinzufügen" BorderBrush="White" OpacityMask="White" GotFocus="tVINewDisc_GotFocus"/>
             <TreeViewItem Name="tVINewDiscSet" Header="Neuen Disziplin-Satz erstellen" GotFocus="tVINewDiscSet_GotFocus" />
         </TreeView>
 
@@ -28,7 +28,7 @@
             </ComboBox>
         </WrapPanel>
 
-        <WrapPanel Name="wPFemale" Margin="374,234,195,0" Visibility="Hidden">
+        <WrapPanel Name="wPFemale" Margin="374,231,195,0" Visibility="Hidden">
             <Label Content="Mädchen" Width="61" Margin="37,0,0,0"/>
             <TextBox Text="Schlechtestes Ergebnis" x:Name="tBMinResF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinResF_GotFocus" LostFocus="tBMinResF_LostFocus"/>
             <TextBox Text="Ergebnisabstufung" x:Name="tBResIncrF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBResIncrF_GotFocus" LostFocus="tBResIncrF_LostFocus"/>
@@ -40,16 +40,15 @@
             </ComboBox>
             <Button Content="Save" Margin="5,0,0,0" Width="127" Height="26" BorderBrush="White" OpacityMask="White" Background="White" Click="btnDiscSave_Click"/>
         </WrapPanel>
-        <WrapPanel Name="wPDiscSet" HorizontalAlignment="Left" Height="444" Margin="374,0,0,0" VerticalAlignment="Top" Width="157">
+        <WrapPanel Name="wPDiscSet" HorizontalAlignment="Left" Height="444" Margin="374,0,0,0" VerticalAlignment="Top" Width="157" Visibility="Hidden">
             <TextBox Name="tBDiscSetName" Height="23" TextWrapping="Wrap" Text="Name" Width="145" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBDiscSetName_GotFocus" LostFocus="tBDiscSetName_LostFocus"/>
 
             <Button Name="btnAddDiscsToSet" Content="Disziplinen hinzufügen" Height="28" Width="143" Background="White" BorderBrush="White" Margin="5,18,0,0" Click="btnAddDiscsToSet_Click"/>
             <Label Content="Disziplinen" Margin="40,1,0,0" Width="75"/>
-            <ListBox Name="lBDiscSet" Height="296" Width="145" Margin="5,0,0,0">
-            </ListBox>
+            <ListBox Name="lBDiscSet" Height="296" Width="145" Margin="5,0,0,0"/>
             <Button Name="btnDiscSetSave" Content="Save" Height="43" Width="145" Margin="5,0,0,0" Background="White" BorderBrush="White" Click="btnDiscSetSave_Click"/>
         </WrapPanel>
-        <Button Name="btnDeletDisc" Content="Löschen" HorizontalAlignment="Left" Height="37" Margin="199,397,0,0" VerticalAlignment="Top" Width="84" Background="White" BorderBrush="White"/>
-        <Button Name="btnEdittDisc" Content="Bearbeiten" HorizontalAlignment="Left" Height="37" Margin="288,397,0,0" VerticalAlignment="Top" Width="81" Background="White" BorderBrush="White"/>
+        <Button Name="btnDeletDisc" Content="Löschen" HorizontalAlignment="Left" Height="37" Margin="199,397,0,0" VerticalAlignment="Top" Width="84" Background="White" BorderBrush="White" Click="btnDeletDisc_Click"/>
+        <Button Name="btnEditDisc" Content="Bearbeiten" HorizontalAlignment="Left" Height="37" Margin="288,397,0,0" VerticalAlignment="Top" Width="81" Background="White" BorderBrush="White" Click="btnEditDisc_Click"/>
     </Grid>
 </Window>

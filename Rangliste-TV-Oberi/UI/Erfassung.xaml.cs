@@ -54,7 +54,7 @@ namespace Rangliste_TV_Oberi
             else
                 return;
 
-            Businessobjects.SQLFunctions.addParticipant(tBName.Text, gender, yearOfBirth, cBStatus.SelectedIndex);
+            Businessobjects.SQLAddAndReturnFunctions.addParticipant(tBName.Text, gender, yearOfBirth, cBStatus.SelectedIndex);
 
 
             tBName.Text = "";

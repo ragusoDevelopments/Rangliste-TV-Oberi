@@ -15,7 +15,7 @@
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>C:\Users\Andrea\Desktop\Lauras songs\</PublishUrl>
+    <PublishUrl>C:\Users\Andrea\Desktop\RL test\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -111,7 +111,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Businessobjects\SQLFunctions.cs" />
+    <Compile Include="Businessobjects\GenearalHelper.cs" />
+    <Compile Include="Businessobjects\SQLAddAndReturnFunctions.cs" />
+    <Compile Include="Businessobjects\SQLDeleteFunctions.cs" />
+    <Compile Include="Businessobjects\SQLUpdateFuntions.cs" />
     <Compile Include="RL Datacontext\RLDB.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
