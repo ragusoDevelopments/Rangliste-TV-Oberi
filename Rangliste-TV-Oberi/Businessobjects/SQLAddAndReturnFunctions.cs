@@ -44,83 +44,140 @@ namespace Rangliste_TV_Oberi.Businessobjects
             main.listTable();
         }
 
-        /// <summary>
-        /// adds a new discipline to the databse
-        /// </summary>
-        /// <param name="discName"></param>
-        /// <returns></returns>
-        public static RL_Datacontext.Disciplines addDiscipline(string discName)
+        public static void addDiscipline(string discName, bool resIsDist, float minRes, float resIncr, int minPts, int ptsIncr, float minResF, float resIncrF, int minPtsF, int ptsIncrF, string gender)
         {
-            RL_Datacontext.Disciplines newDisc = new RL_Datacontext.Disciplines()
-            {
-                Discipline = discName
-            };
+            RL_Datacontext.Disciplines newDisc = new RL_Datacontext.Disciplines();
+            newDisc.DisciplineName = discName;
+            newDisc.IsDistance = resIsDist;
 
+            switch (gender)
+            {
+                case "male":
+                    {
+                        newDisc.MinResult = minRes;
+                        newDisc.ResultIncr = resIncr;
+                        newDisc.MinPoints = minPts;
+                        newDisc.ResultIncr = resIncr;
+                        break;
+                    }
+                case "female":
+                    {
+                        newDisc.MinResultF = minResF;
+                        newDisc.ResultIncrF = resIncrF;
+                        newDisc.MinPointsF = minPtsF;
+                        newDisc.ResultIncrF = resIncrF;
+                        break;
+                    }
+                case "both":
+                    {
+                        newDisc.MinResult = minRes;
+                        newDisc.ResultIncr = resIncr;
+                        newDisc.MinPoints = minPts;
+                        newDisc.ResultIncr = resIncr;
+
+                        newDisc.MinResultF = minResF;
+                        newDisc.ResultIncrF = resIncrF;
+                        newDisc.MinPointsF = minPtsF;
+                        newDisc.ResultIncrF = resIncrF;
+                        break;
+                    }
+            }
             dc.Disciplines.InsertOnSubmit(newDisc);
             dc.SubmitChanges();
 
-            return newDisc;
+            switch (gender)
+            {
+                case "male":
+                    {
+                        addPointsAndResultsMale(newDisc, resIsDist, minRes, resIncr, minPts, ptsIncr);
+                        break;
+                    }
+                case "female":
+                    {
+                        addPointsAndResultsFemale(newDisc, resIsDist, minResF, resIncrF, minPtsF, ptsIncrF);
+                        break;
+                    }
+                case "both":
+                    {
+                        addPointsAndResultsMale(newDisc, resIsDist, minRes, resIncr, minPts, ptsIncr);
+                        addPointsAndResultsFemale(newDisc, resIsDist, minResF, resIncrF, minPtsF, ptsIncrF);
+                        break;
+                    }
+            }
         }
 
-        /// <summary>
-        /// Adds the result-point table to a category
-        /// </summary>
-        /// <param name="disc"></param>
-        /// <param name="worstRes"></param>
-        /// <param name="resIncr"></param>
-        /// <param name="minPts"></param>
-        /// <param name="ptsIncr"></param>
-        /// <param name="resIsDistance"></param>
-        public static void addPointsToDiscipline(RL_Datacontext.Disciplines disc, float worstRes, float resIncr, int minPts, int ptsIncr, bool resIsDistance, bool male)
+        private static void addPointsAndResultsMale(RL_Datacontext.Disciplines disc, bool resIsDist, float minRes, float resIncr, int minPts, int ptsIncr)
         {
+            float currentResult = minRes;
+            int currentPoints = minPts;
 
-            float currentRes = worstRes;
-            int currentPts = minPts;
-
-            if (male)
+            if (resIsDist)
             {
-                for (int pts = minPts; pts <= 100; pts += ptsIncr)
+                for (int i = minPts; i <= 100; i += ptsIncr)
                 {
-                    RL_Datacontext.MaleDisciplinePoints newDiscPoint = new RL_Datacontext.MaleDisciplinePoints()
+                    RL_Datacontext.MaleDisciplinePoints newDiscPts = new RL_Datacontext.MaleDisciplinePoints()
                     {
-                        Result = Math.Round(currentRes, 1),
-                        Points = currentPts
+                        Result = Math.Round(currentResult, 1),
+                        Points = currentPoints
                     };
-
-                    disc.MaleDisciplinePoints.Add(newDiscPoint);
-
-                    if (resIsDistance)
-                        currentRes += resIncr;
-                    else
-                        currentRes -= resIncr;
-
-                    currentPts += ptsIncr;
+                    disc.MaleDisciplinePoints.Add(newDiscPts);
+                    currentResult += resIncr;
+                    currentPoints += ptsIncr;
                 }
             }
             else
             {
-                for (int pts = minPts; pts <= 100; pts += ptsIncr)
+                for (int i = minPts; i <= 100; i += ptsIncr)
                 {
-                    RL_Datacontext.FemaleDisciplinePoints newDiscPoint = new RL_Datacontext.FemaleDisciplinePoints()
+                    RL_Datacontext.MaleDisciplinePoints newDiscPts = new RL_Datacontext.MaleDisciplinePoints()
                     {
-                        Result = Math.Round(currentRes, 1),
-                        Points = currentPts
+                        Result = Math.Round(currentResult, 1),
+                        Points = currentPoints
                     };
-
-                    disc.FemaleDisciplinePoints.Add(newDiscPoint);
-
-                    if (resIsDistance)
-                        currentRes += resIncr;
-                    else
-                        currentRes -= resIncr;
-
-                    currentPts += ptsIncr;
+                    disc.MaleDisciplinePoints.Add(newDiscPts);
+                    currentResult -= resIncr;
+                    currentPoints += ptsIncr;
                 }
             }
             dc.SubmitChanges();
-
-
         }
+
+        private static void addPointsAndResultsFemale(RL_Datacontext.Disciplines disc, bool resIsDist, float minResF, float resIncrF, int minPtsF, int ptsIncrF)
+        {
+            float currentResult = minResF;
+            int currentPoints = minPtsF;
+
+            if (resIsDist)
+            {
+                for (int i = minPtsF; i <= 100; i += ptsIncrF)
+                {
+                    RL_Datacontext.FemaleDisciplinePoints newDiscPts = new RL_Datacontext.FemaleDisciplinePoints()
+                    {
+                        Result = Math.Round(currentResult, 1),
+                        Points = currentPoints
+                    };
+                    disc.FemaleDisciplinePoints.Add(newDiscPts);
+                    currentResult += resIncrF;
+                    currentPoints += ptsIncrF;
+                }
+            }
+            else
+            {
+                for (int i = minPtsF; i <= 100; i += ptsIncrF)
+                {
+                    RL_Datacontext.FemaleDisciplinePoints newDiscPts = new RL_Datacontext.FemaleDisciplinePoints()
+                    {
+                        Result = Math.Round(currentResult, 1),
+                        Points = currentPoints
+                    };
+                    disc.FemaleDisciplinePoints.Add(newDiscPts);
+                    currentResult -= resIncrF;
+                    currentPoints += ptsIncrF;
+                }
+            }
+            dc.SubmitChanges();
+        }
+
 
         /// <summary>
         /// fills the Category Table with the standard ages
@@ -274,7 +331,7 @@ namespace Rangliste_TV_Oberi.Businessobjects
             else
             {
                 IEnumerable<RL_Datacontext.Disciplines> discs = from d in dc.Disciplines
-                                                                where d.Discipline == discName
+                                                                where d.DisciplineName == discName
                                                                 select d;
                 return discs;
             }
@@ -295,8 +352,5 @@ namespace Rangliste_TV_Oberi.Businessobjects
                 return false;
 
         }
-
-        
-
     }
 }

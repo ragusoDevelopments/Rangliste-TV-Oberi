@@ -16,7 +16,7 @@ namespace Rangliste_TV_Oberi.Businessobjects
         public static void deleteDiscipline(string disciplineName)
         {
             RL_Datacontext.Disciplines delDisc = (from d in dc.Disciplines
-                                                  where d.Discipline == disciplineName
+                                                  where d.DisciplineName == disciplineName
                                                   select d).FirstOrDefault();
             delDisc.MaleDisciplinePoints.Clear();
             delDisc.FemaleDisciplinePoints.Clear();

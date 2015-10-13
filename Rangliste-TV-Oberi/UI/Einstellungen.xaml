@@ -1,6 +1,7 @@
-﻿<Window x:Class="Rangliste_TV_Oberi.Einstellungen"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Rangliste_TV_Oberi.Einstellungen"
         Title="Einstellungen" Height="473.925" Width="718" WindowStyle="ToolWindow" Closed="Window_Closed" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -8,47 +9,45 @@
         </Grid.ColumnDefinitions>
         <TreeView Margin="0,0,511,0" SelectedItemChanged="TreeView_SelectedItemChanged">
             <TreeViewItem Header="Disziplin hinzufügen" BorderBrush="White" OpacityMask="White" GotFocus="tVINewDisc_GotFocus"/>
-            <TreeViewItem Name="tVINewDiscSet" Header="Neuen Disziplin-Satz erstellen" GotFocus="tVINewDiscSet_GotFocus" />
+            <TreeViewItem x:Name="tVINewDiscSet" Header="Neuen Disziplin-Satz erstellen" GotFocus="tVINewDiscSet_GotFocus" />
         </TreeView>
 
         <Label Content="Disziplinen" Margin="251,0,355,402"/>
-        <ListBox Name="lBDisciplines" HorizontalAlignment="Left" Height="364" VerticalAlignment="Top" Width="176" Margin="198,33,0,0" SelectionMode="Multiple">
-
-        </ListBox>
-        <WrapPanel Name ="wPMale" Margin="374,0,195,234" Visibility="Hidden">
-            <TextBox Text="Name" x:Name="tBDisciplineName" Height="23" Width="127" Margin="5,8,0,0" GotFocus="tBDisciplineName_GotFocus" LostFocus="tBDisciplineName_LostFocus" Foreground="#FF7E7E7E" Padding="0" />
-            <Label Content="Knaben" Width="54" Margin="41,0,0,0"/>
-            <TextBox Text="Schlechtestes Ergebnis" x:Name="tBMinRes" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinRes_GotFocus" LostFocus="tBMinRes_LostFocus"/>
-            <TextBox Text="Ergebnisabstufung" x:Name="tBResIncr" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBResIncr_GotFocus" LostFocus="tBResIncr_LostFocus"/>
-            <TextBox Text="Minimalpunktzahl" x:Name="tBMinPts" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinPts_GotFocus" LostFocus="tBMinPts_LostFocus"/>
-            <TextBox Text="Punkteabstufung" x:Name="tBPtsIncr" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBPtsIncr_GotFocus" LostFocus="tBPtsIncr_LostFocus"/>
+        <ListBox x:Name="lBDisciplines" HorizontalAlignment="Left" Height="364" VerticalAlignment="Top" Width="176" Margin="198,33,0,0" SelectionMode="Multiple"/>
+        
+        <WrapPanel x:Name="wPAddDisc" RenderTransformOrigin="0.62,0.439" Margin="374,0,191,0">
+            <TextBox Text="Name" x:Name="tBDisciplineName" Height="23" Width="127" Margin="5,33,0,0" GotFocus="tBDisciplineName_GotFocus" LostFocus="tBDisciplineName_LostFocus" Foreground="#FF7E7E7E" Padding="0" />
             <ComboBox x:Name="cBoxResultType" Height="23" Width="127" Margin="5,5,0,0" SelectedIndex="0">
                 <ComboBoxItem Content="Distanz"/>
                 <ComboBoxItem Content="Zeit" />
             </ComboBox>
-        </WrapPanel>
+            <WrapPanel x:Name ="wPMale" Margin="5,17,0,0" RenderTransformOrigin="0.5,0.5" Width="140" Height="157">
+                <Label Content="Knaben" Width="54" Margin="41,0,0,0" />
+                <TextBox Text="Schlechtestes Ergebnis" x:Name="tBMinRes" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinRes_GotFocus" LostFocus="tBMinRes_LostFocus"/>
+                <TextBox Text="Ergebnisabstufung" x:Name="tBResIncr" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBResIncr_GotFocus" LostFocus="tBResIncr_LostFocus"/>
+                <TextBox Text="Minimalpunktzahl" x:Name="tBMinPts" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinPts_GotFocus" LostFocus="tBMinPts_LostFocus"/>
+                <TextBox Text="Punkteabstufung" x:Name="tBPtsIncr" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBPtsIncr_GotFocus" LostFocus="tBPtsIncr_LostFocus"/>
+            </WrapPanel>
 
-        <WrapPanel Name="wPFemale" Margin="374,231,195,0" Visibility="Hidden">
-            <Label Content="Mädchen" Width="61" Margin="37,0,0,0"/>
-            <TextBox Text="Schlechtestes Ergebnis" x:Name="tBMinResF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinResF_GotFocus" LostFocus="tBMinResF_LostFocus"/>
-            <TextBox Text="Ergebnisabstufung" x:Name="tBResIncrF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBResIncrF_GotFocus" LostFocus="tBResIncrF_LostFocus"/>
-            <TextBox Text="Minimalpunktzahl" x:Name="tBMinPtsF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinPtsF_GotFocus" LostFocus="tBMinPtsF_LostFocus"/>
-            <TextBox Text="Punkteabstufung" x:Name="tBPtsIncrF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBPtsIncrF_GotFocus" LostFocus="tBPtsIncrF_LostFocus"/>
-            <ComboBox x:Name="cBoxResultTypeF" Height="23" Width="127" Margin="5,5,0,0" SelectedIndex="0">
-                <ComboBoxItem Content="Distanz"/>
-                <ComboBoxItem Content="Zeit" />
-            </ComboBox>
-            <Button Content="Save" Margin="5,0,0,0" Width="127" Height="26" BorderBrush="White" OpacityMask="White" Background="White" Click="btnDiscSave_Click"/>
+            <WrapPanel x:Name="wPFemale" Margin="5,1,0,0" RenderTransformOrigin="0.5,0.5" Width="135">
+                <Label Content="Mädchen" Width="61" Margin="37,0,0,0"/>
+                <TextBox Text="Schlechtestes Ergebnis" x:Name="tBMinResF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinResF_GotFocus" LostFocus="tBMinResF_LostFocus"/>
+                <TextBox Text="Ergebnisabstufung" x:Name="tBResIncrF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBResIncrF_GotFocus" LostFocus="tBResIncrF_LostFocus"/>
+                <TextBox Text="Minimalpunktzahl" x:Name="tBMinPtsF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBMinPtsF_GotFocus" LostFocus="tBMinPtsF_LostFocus"/>
+                <TextBox Text="Punkteabstufung" x:Name="tBPtsIncrF" Height="23" Width="127" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBPtsIncrF_GotFocus" LostFocus="tBPtsIncrF_LostFocus"/>
+                <Button Content="Save" Margin="5,2,0,0" Width="127" Height="26" BorderBrush="White" OpacityMask="White" Background="White" Click="btnDiscSave_Click"/>
+            </WrapPanel>
         </WrapPanel>
-        <WrapPanel Name="wPDiscSet" HorizontalAlignment="Left" Height="444" Margin="374,0,0,0" VerticalAlignment="Top" Width="157" Visibility="Hidden">
-            <TextBox Name="tBDiscSetName" Height="23" TextWrapping="Wrap" Text="Name" Width="145" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBDiscSetName_GotFocus" LostFocus="tBDiscSetName_LostFocus"/>
+        <WrapPanel x:Name="wPDiscSet" HorizontalAlignment="Left" Height="444" Margin="374,0,0,0" VerticalAlignment="Top" Width="157" Visibility="Hidden">
+            <TextBox x:Name="tBDiscSetName" Height="23" TextWrapping="Wrap" Text="Name" Width="145" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBDiscSetName_GotFocus" LostFocus="tBDiscSetName_LostFocus"/>
 
-            <Button Name="btnAddDiscsToSet" Content="Disziplinen hinzufügen" Height="28" Width="143" Background="White" BorderBrush="White" Margin="5,18,0,0" Click="btnAddDiscsToSet_Click"/>
+            <Button x:Name="btnAddDiscsToSet" Content="Disziplinen hinzufügen" Height="28" Width="143" Background="White" BorderBrush="White" Margin="5,18,0,0" Click="btnAddDiscsToSet_Click"/>
             <Label Content="Disziplinen" Margin="40,1,0,0" Width="75"/>
-            <ListBox Name="lBDiscSet" Height="296" Width="145" Margin="5,0,0,0"/>
-            <Button Name="btnDiscSetSave" Content="Save" Height="43" Width="145" Margin="5,0,0,0" Background="White" BorderBrush="White" Click="btnDiscSetSave_Click"/>
+            <ListBox x:Name="lBDiscSet" Height="296" Width="145" Margin="5,0,0,0"/>
+            <Button x:Name="btnDiscSetSave" Content="Save" Height="43" Width="145" Margin="5,0,0,0" Background="White" BorderBrush="White" Click="btnDiscSetSave_Click"/>
         </WrapPanel>
-        <Button Name="btnDeletDisc" Content="Löschen" HorizontalAlignment="Left" Height="37" Margin="199,397,0,0" VerticalAlignment="Top" Width="84" Background="White" BorderBrush="White" Click="btnDeletDisc_Click"/>
-        <Button Name="btnEditDisc" Content="Bearbeiten" HorizontalAlignment="Left" Height="37" Margin="288,397,0,0" VerticalAlignment="Top" Width="81" Background="White" BorderBrush="White" Click="btnEditDisc_Click"/>
+
+        <Button x:Name="btnDeletDisc" Content="Löschen" HorizontalAlignment="Left" Height="37" Margin="199,397,0,0" VerticalAlignment="Top" Width="84" Background="White" BorderBrush="White" Click="btnDeletDisc_Click"/>
+        <Button x:Name="btnEditDisc" Content="Bearbeiten" HorizontalAlignment="Left" Height="37" Margin="288,397,0,0" VerticalAlignment="Top" Width="81" Background="White" BorderBrush="White" Click="btnEditDisc_Click"/>
     </Grid>
 </Window>

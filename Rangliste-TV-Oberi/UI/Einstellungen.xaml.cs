@@ -19,8 +19,21 @@ namespace Rangliste_TV_Oberi
     /// </summary>
     public partial class Einstellungen : Window
     {
+        #region Variables
         private string SaveButtonMode;
         Businessobjects.GenearalHelper helper = new Businessobjects.GenearalHelper();
+
+        string disciplineName;
+        bool resIsDistance;
+        float minimalResult = 0;
+        float resultIncrement = 0;
+        int minimalPoints = 0;
+        int pointsIncrement = 0;
+        float minimalResultF = 0;
+        float resultIncrementF = 0;
+        int minimalPointsF = 0;
+        int pointsIncrementF = 0;
+        #endregion
 
         public Einstellungen()
         {
@@ -32,22 +45,45 @@ namespace Rangliste_TV_Oberi
 
         private void btnDiscSave_Click(object sender, RoutedEventArgs e)
         {
-            if (SaveButtonMode == "insert")
+            if (Businessobjects.SQLAddAndReturnFunctions.checkDisciplines(tBDisciplineName.Text))
             {
-                helper.addDisciplineAndResultsToDiscipline(tBDisciplineName, tBMinRes, tBResIncr, tBPtsIncr, cBoxResultType, tBMinPts, true, wPMale);
-                helper.addDisciplineAndResultsToDiscipline(tBDisciplineName, tBMinResF, tBResIncrF, tBPtsIncrF, cBoxResultTypeF, tBMinPtsF, false, wPFemale);
-            }
+                switch (checkTextBoxes())
+                {
+                    case "male":
+                        if (!PrepareVars(true))
+                            return;
 
-            if (SaveButtonMode == "update")
+                        Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
+                        break;
+
+                    case "female":
+                        if (!PrepareVars(false))
+                            return;
+
+                        Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "female");
+                        break;
+
+                    case "both":
+                        if (!PrepareVars(true) || !PrepareVars(false))
+                            return;
+
+                        Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "both");
+                        break;
+
+                    case "nothing":
+                        return;
+                }
+            }
+            else
             {
-                #region cleanup
-                wPFemale.Visibility = Visibility.Hidden;
-                wPMale.Visibility = Visibility.Hidden;
-                #endregion
+                MessageBox.Show("Eine Disziplin mit dem Namen '" + tBDisciplineName.Text + "' existiert bereits.\n Bitten Namen ändern.");
+                return;
             }
 
             helper.filllBDiscipline(lBDisciplines);
-
+            cleanupNewDisc();
+            MainWindow main = (MainWindow)App.Current.MainWindow;
+            main.listTable();
         }
 
         private void btnDeletDisc_Click(object sender, RoutedEventArgs e)
@@ -102,8 +138,7 @@ namespace Rangliste_TV_Oberi
         private void btnEditDisc_Click(object sender, RoutedEventArgs e)
         {
             SaveButtonMode = "update";
-            wPFemale.Visibility = Visibility.Visible;
-            wPMale.Visibility = Visibility.Visible;
+            wPAddDisc.Visibility = Visibility.Visible;
         }
 
 
@@ -116,32 +151,31 @@ namespace Rangliste_TV_Oberi
 
         private void tVINewDisc_GotFocus(object sender, RoutedEventArgs e)
         {
-            wPMale.Visibility = Visibility.Visible;
-            wPFemale.Visibility = Visibility.Visible;
             SaveButtonMode = "insert";
+            wPAddDisc.Visibility = Visibility.Visible;
 
-                #region cleanup
-                string[] texts = new string[] { "Disziplin", "Mindestleistung", "Ergebnisabstufung", "Minimalpunktzahl", "Punkteabstufung" };
-                int count = 0;
+            #region cleanup
+            string[] texts = new string[] { "Disziplin", "Mindestleistung", "Ergebnisabstufung", "Minimalpunktzahl", "Punkteabstufung" };
+            int count = 0;
 
-                foreach (TextBox tB in wPMale.Children.OfType<TextBox>())
-                {
-                    tB.Text = texts[count];
-                    tB.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
-                    count++;
-                }
-                cBoxResultType.SelectedIndex = 0;
+            foreach (TextBox tB in wPAddDisc.Children.OfType<TextBox>())
+            {
+                tB.Text = texts[count];
+                tB.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
+                count++;
+            }
 
-                count = 0;
-                foreach (TextBox tB in wPFemale.Children.OfType<TextBox>())
-                {
-                    tB.Text = texts[count];
-                    tB.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
-                    count++;
-                }
-                cBoxResultTypeF.SelectedIndex = 0;
-                #endregion
-            
+            count = 0;
+            foreach (TextBox tB in wPFemale.Children.OfType<TextBox>())
+            {
+                tB.Text = texts[count];
+                tB.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
+                count++;
+            }
+
+            cBoxResultType.SelectedIndex = 0;
+            #endregion
+
         }
 
         private void tVINewDiscSet_GotFocus(object sender, RoutedEventArgs e)
@@ -151,16 +185,116 @@ namespace Rangliste_TV_Oberi
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            wPMale.Visibility = Visibility.Hidden;
-            wPFemale.Visibility = Visibility.Hidden;
+            wPAddDisc.Visibility = Visibility.Visible;
             wPDiscSet.Visibility = Visibility.Hidden;
             SaveButtonMode = "insert";
+        }
+
+        private string checkTextBoxes()
+        {
+            bool maleIsFull = true;
+            bool femaleIsFull = true;
+
+            foreach (TextBox tB in wPMale.Children.OfType<TextBox>())
+            {
+                if (tB.Foreground.ToString() == "#FF7E7E7E")
+                    maleIsFull = false;
+            }
+
+            foreach (TextBox tB in wPFemale.Children.OfType<TextBox>())
+            {
+                if (tB.Foreground.ToString() == "#FF7E7E7E")
+                    femaleIsFull = false;
+            }
+
+            if (maleIsFull && !femaleIsFull)
+                return "male";
+            if (!maleIsFull && femaleIsFull)
+                return "female";
+            if (maleIsFull && femaleIsFull)
+                return "both";
+            else
+                return "nothing";
+
+        }
+
+        private bool PrepareVars(bool male)
+        {
+            if (cBoxResultType.SelectedIndex == 0)
+                resIsDistance = true;
+            else
+                resIsDistance = false;
+
+            disciplineName = tBDisciplineName.Text;
+
+            if (male)
+            {
+                tBMinRes.Text = tBMinRes.Text.Replace(".", ",");
+                tBResIncr.Text = tBResIncr.Text.Replace(".", ",");
+                try
+                {
+                    minimalResult = (float)Convert.ToDouble(tBMinRes.Text);
+                    resultIncrement = (float)Convert.ToDouble(tBResIncr.Text);
+                    minimalPoints = Convert.ToInt32(tBMinPts.Text);
+                    pointsIncrement = Convert.ToInt32(tBPtsIncr.Text);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                tBMinResF.Text = tBMinResF.Text.Replace(".", ",");
+                tBResIncrF.Text = tBResIncrF.Text.Replace(".", ",");
+                try
+                {
+                    minimalResultF = (float)Convert.ToDouble(tBMinResF.Text);
+                    resultIncrementF = (float)Convert.ToDouble(tBResIncrF.Text);
+                    minimalPointsF = Convert.ToInt32(tBMinPtsF.Text);
+                    pointsIncrementF = Convert.ToInt32(tBPtsIncrF.Text);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+
+        }
+
+        private void cleanupNewDisc()
+        {
+            int count = 0;
+            string[] texts = new string[] {"Schlechtestes Ergebnis", "Ergebnisabstufung", "Minimalpunktzahl", "Punkteabstufung"};
+
+            tBDisciplineName.Text = "Disziplin";
+            tBDisciplineName.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
+            cBoxResultType.SelectedIndex = 0;
+
+            foreach(TextBox tB in wPMale.Children.OfType<TextBox>())
+            {
+                tB.Text = texts[count];
+                tB.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
+                count++;
+            }
+
+            count = 0;
+
+            foreach (TextBox tB in wPFemale.Children.OfType<TextBox>())
+            {
+                tB.Text = texts[count];
+                tB.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
+                count++;
+            }
         }
 
         #region explainingtext appereance and disappereance
         //gotfoc + foclost handle the appereance and disappereance of the grey explaining text in Textboxes
         private void gotfoc(TextBox tB)
         {
+            //OMFG, that fucking works!!
             if (tB.Foreground.ToString() == "#FF7E7E7E")
             {
                 tB.Text = "";
@@ -178,12 +312,7 @@ namespace Rangliste_TV_Oberi
 
         private void tBDisciplineName_GotFocus(object sender, RoutedEventArgs e)
         {
-            //OMFG, That fucking works!!!
-            if (tBDisciplineName.Foreground.ToString() == "#FF7E7E7E")
-            {
                 gotfoc(tBDisciplineName);
-            }
-
         }
 
         private void tBDisciplineName_LostFocus(object sender, RoutedEventArgs e)
