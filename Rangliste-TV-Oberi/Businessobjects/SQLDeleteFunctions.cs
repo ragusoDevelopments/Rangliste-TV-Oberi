@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
 
 namespace Rangliste_TV_Oberi.Businessobjects
 {
@@ -24,6 +25,33 @@ namespace Rangliste_TV_Oberi.Businessobjects
 
             dc.Disciplines.DeleteOnSubmit(delDisc);
             dc.SubmitChanges();
+        }
+
+        public static void deleteDiscSet(string discSetname)
+        {
+            RL_Datacontext.DisciplineSet delDiscSet = (from d in dc.DisciplineSet
+                                                  where d.Name == discSetname
+                                                  select d).First();
+
+            delDiscSet.DisciplinesFromSet.Clear();
+
+
+            dc.DisciplineSet.DeleteOnSubmit(delDiscSet);
+            dc.SubmitChanges();
+        }
+
+        public static void filllBDiscSets(ListBox lBDiscSets)
+        {
+            lBDiscSets.Items.Clear();
+            IEnumerable<RL_Datacontext.DisciplineSet> discSets = from d in dc.DisciplineSet
+                                                                 select d;
+
+            foreach(var v in discSets)
+            {
+                ListBoxItem newItem = new ListBoxItem();
+                newItem.Content = v.Name;
+                lBDiscSets.Items.Add(newItem);
+            }
         }
     }
 }

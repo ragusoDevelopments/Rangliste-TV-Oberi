@@ -54,31 +54,31 @@ namespace Rangliste_TV_Oberi.Businessobjects
             {
                 case "male":
                     {
-                        newDisc.MinResult = minRes;
-                        newDisc.ResultIncr = resIncr;
+                        newDisc.MinResult = Math.Round(minRes, 1);
+                        newDisc.ResultIncr = Math.Round(resIncr, 1);
                         newDisc.MinPoints = minPts;
-                        newDisc.ResultIncr = resIncr;
+                        newDisc.PointsIncr = ptsIncr;
                         break;
                     }
                 case "female":
                     {
-                        newDisc.MinResultF = minResF;
-                        newDisc.ResultIncrF = resIncrF;
+                        newDisc.MinResultF = Math.Round(minResF, 1);
+                        newDisc.ResultIncrF = Math.Round(resIncrF, 1);
                         newDisc.MinPointsF = minPtsF;
-                        newDisc.ResultIncrF = resIncrF;
+                        newDisc.PointsIncrF = ptsIncrF;
                         break;
                     }
                 case "both":
                     {
-                        newDisc.MinResult = minRes;
-                        newDisc.ResultIncr = resIncr;
+                        newDisc.MinResult = Math.Round(minRes, 1);
+                        newDisc.ResultIncr = Math.Round(resIncr, 1);
                         newDisc.MinPoints = minPts;
-                        newDisc.ResultIncr = resIncr;
+                        newDisc.PointsIncr = ptsIncr;
 
-                        newDisc.MinResultF = minResF;
-                        newDisc.ResultIncrF = resIncrF;
+                        newDisc.MinResultF = Math.Round(minResF, 1);
+                        newDisc.ResultIncrF = Math.Round(resIncrF, 1);
                         newDisc.MinPointsF = minPtsF;
-                        newDisc.ResultIncrF = resIncrF;
+                        newDisc.PointsIncrF = ptsIncrF;
                         break;
                     }
             }
@@ -106,7 +106,7 @@ namespace Rangliste_TV_Oberi.Businessobjects
             }
         }
 
-        private static void addPointsAndResultsMale(RL_Datacontext.Disciplines disc, bool resIsDist, float minRes, float resIncr, int minPts, int ptsIncr)
+        public static void addPointsAndResultsMale(RL_Datacontext.Disciplines disc, bool resIsDist, float minRes, float resIncr, int minPts, int ptsIncr)
         {
             float currentResult = minRes;
             int currentPoints = minPts;
@@ -142,7 +142,7 @@ namespace Rangliste_TV_Oberi.Businessobjects
             dc.SubmitChanges();
         }
 
-        private static void addPointsAndResultsFemale(RL_Datacontext.Disciplines disc, bool resIsDist, float minResF, float resIncrF, int minPtsF, int ptsIncrF)
+        public static void addPointsAndResultsFemale(RL_Datacontext.Disciplines disc, bool resIsDist, float minResF, float resIncrF, int minPtsF, int ptsIncrF)
         {
             float currentResult = minResF;
             int currentPoints = minPtsF;
@@ -347,6 +347,24 @@ namespace Rangliste_TV_Oberi.Businessobjects
             IEnumerable<RL_Datacontext.Disciplines> discs = returnDisciplines(discName);
 
             if (discs.Count() == 0)
+                return true;
+            else
+                return false;
+
+        }
+
+        /// <summary>
+        /// checks if a discipline set with the name discSetName alreasy exits
+        /// </summary>
+        /// <param name="discName">New disciplines name</param>
+        /// <returns>false if it already exits</returns>
+        public static bool checkDisciplineSets(string discSetName)
+        {
+            IEnumerable<RL_Datacontext.DisciplineSet> discSets = from d in dc.DisciplineSet
+                                                                 where d.Name == discSetName
+                                                                 select d;
+
+            if (discSets.Count() == 0)
                 return true;
             else
                 return false;

@@ -33,6 +33,9 @@ namespace Rangliste_TV_Oberi
         float resultIncrementF = 0;
         int minimalPointsF = 0;
         int pointsIncrementF = 0;
+
+        string[] texts = new string[] { "Schlechtestes Ergebnis", "Ergebnisabstufung", "Minimalpunktzahl", "Punkteabstufung" };
+        string oldDisciplineName;
         #endregion
 
         public Einstellungen()
@@ -45,43 +48,83 @@ namespace Rangliste_TV_Oberi
 
         private void btnDiscSave_Click(object sender, RoutedEventArgs e)
         {
-            if (Businessobjects.SQLAddAndReturnFunctions.checkDisciplines(tBDisciplineName.Text))
+            #region SaveButtonMode = "insert"
+            if (SaveButtonMode == "insert")
             {
-                switch (checkTextBoxes())
+                if (Businessobjects.SQLAddAndReturnFunctions.checkDisciplines(tBDisciplineName.Text))
+                {
+                    switch (checkTextBoxes())
+                    {
+                        case "male":
+                            if (!PrepareVars(true))
+                                return;
+
+                            Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
+                            break;
+
+                        case "female":
+                            if (!PrepareVars(false))
+                                return;
+
+                            Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "female");
+                            break;
+
+                        case "both":
+                            if (!PrepareVars(true) || !PrepareVars(false))
+                                return;
+
+                            Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "both");
+                            break;
+
+                        case "nothing":
+                            return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Eine Disziplin mit dem Namen '" + tBDisciplineName.Text + "' existiert bereits.\n Bitten Namen ändern.");
+                    return;
+                }
+
+                cleanupNewDisc();
+            }
+            #endregion
+            else
+            #region SavebuttonMode = "update"
+            {
+                checkTextBoxes();
+
+                switch(checkTextBoxes())
                 {
                     case "male":
                         if (!PrepareVars(true))
                             return;
 
-                        Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
+                        Businessobjects.SQLUpdateFuntions.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
                         break;
 
                     case "female":
                         if (!PrepareVars(false))
                             return;
 
-                        Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "female");
+                        Businessobjects.SQLUpdateFuntions.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
                         break;
 
                     case "both":
                         if (!PrepareVars(true) || !PrepareVars(false))
                             return;
-
-                        Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "both");
+                        Businessobjects.SQLUpdateFuntions.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
+                        Businessobjects.SQLUpdateFuntions.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "female");
                         break;
-
-                    case "nothing":
-                        return;
                 }
+                cleanupNewDisc();
+
             }
-            else
-            {
-                MessageBox.Show("Eine Disziplin mit dem Namen '" + tBDisciplineName.Text + "' existiert bereits.\n Bitten Namen ändern.");
-                return;
-            }
+            #endregion
+
+
 
             helper.filllBDiscipline(lBDisciplines);
-            cleanupNewDisc();
             MainWindow main = (MainWindow)App.Current.MainWindow;
             main.listTable();
         }
@@ -113,7 +156,7 @@ namespace Rangliste_TV_Oberi
 
         private void btnDiscSetSave_Click(object sender, RoutedEventArgs e)
         {
-            if (tBDiscSetName.Foreground.ToString() == "#FF7E7E7E" || lBDiscSet.Items.Count == 0)
+            if (tBDiscSetName.Foreground.ToString() == "#FF7E7E7E" || lBDiscSet.Items.Count == 0 || !Businessobjects.SQLAddAndReturnFunctions.checkDisciplineSets(tBDiscSetName.Text))
                 return;
 
             string[] disciplines = new string[lBDiscSet.Items.Count];
@@ -139,6 +182,32 @@ namespace Rangliste_TV_Oberi
         {
             SaveButtonMode = "update";
             wPAddDisc.Visibility = Visibility.Visible;
+
+            if (lBDisciplines.SelectedItems.Count != 1)
+                return;
+            helper.prepareTextBoxes(wPAddDisc);
+
+
+            char[] split = new char[] { Convert.ToChar(":") };
+            string currentName = lBDisciplines.SelectedItem.ToString().Split(split)[1];
+
+            Businessobjects.SQLUpdateFuntions.fillwPAddDisc(currentName.Trim(), tBDisciplineName, cBoxResultType, tBMinRes, tBResIncr, tBMinPts, tBPtsIncr, tBMinResF, tBResIncrF, tBMinPtsF, tBPtsIncrF);
+
+            oldDisciplineName = tBDisciplineName.Text;
+
+            doFoclostFunctionByEdit();
+        }
+
+        private void btnDeletDiscSet_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ListBoxItem item in lBEditDiscSets.Items)
+            {
+                if (item.IsSelected)
+                {
+                    Businessobjects.SQLDeleteFunctions.deleteDiscSet(item.Content.ToString());
+                }
+            }
+            Businessobjects.SQLDeleteFunctions.filllBDiscSets(lBEditDiscSets);
         }
 
 
@@ -154,27 +223,7 @@ namespace Rangliste_TV_Oberi
             SaveButtonMode = "insert";
             wPAddDisc.Visibility = Visibility.Visible;
 
-            #region cleanup
-            string[] texts = new string[] { "Disziplin", "Mindestleistung", "Ergebnisabstufung", "Minimalpunktzahl", "Punkteabstufung" };
-            int count = 0;
-
-            foreach (TextBox tB in wPAddDisc.Children.OfType<TextBox>())
-            {
-                tB.Text = texts[count];
-                tB.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
-                count++;
-            }
-
-            count = 0;
-            foreach (TextBox tB in wPFemale.Children.OfType<TextBox>())
-            {
-                tB.Text = texts[count];
-                tB.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
-                count++;
-            }
-
-            cBoxResultType.SelectedIndex = 0;
-            #endregion
+            cleanupNewDisc();
 
         }
 
@@ -183,11 +232,17 @@ namespace Rangliste_TV_Oberi
             wPDiscSet.Visibility = Visibility.Visible;
         }
 
+        private void tVIDelDiscSet_GotFocus(object sender, RoutedEventArgs e)
+        {
+            wPEditDiscSets.Visibility = Visibility.Visible;
+            Businessobjects.SQLDeleteFunctions.filllBDiscSets(lBEditDiscSets);
+        }
+
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            wPAddDisc.Visibility = Visibility.Visible;
+            wPAddDisc.Visibility = Visibility.Hidden;
             wPDiscSet.Visibility = Visibility.Hidden;
-            SaveButtonMode = "insert";
+            wPEditDiscSets.Visibility = Visibility.Hidden;
         }
 
         private string checkTextBoxes()
@@ -216,6 +271,24 @@ namespace Rangliste_TV_Oberi
             else
                 return "nothing";
 
+        }
+
+        private void doFoclostFunctionByEdit()
+        {
+            int count = 0;
+
+            foreach(TextBox tB in wPMale.Children.OfType<TextBox>())
+            {
+                foclost(tB, texts[count]);
+                count++;
+            }
+
+            count = 0;
+            foreach (TextBox tB in wPFemale.Children.OfType<TextBox>())
+            {
+                foclost(tB, texts[count]);
+                count++;
+            }
         }
 
         private bool PrepareVars(bool male)
@@ -267,13 +340,12 @@ namespace Rangliste_TV_Oberi
         private void cleanupNewDisc()
         {
             int count = 0;
-            string[] texts = new string[] {"Schlechtestes Ergebnis", "Ergebnisabstufung", "Minimalpunktzahl", "Punkteabstufung"};
 
             tBDisciplineName.Text = "Disziplin";
             tBDisciplineName.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
             cBoxResultType.SelectedIndex = 0;
 
-            foreach(TextBox tB in wPMale.Children.OfType<TextBox>())
+            foreach (TextBox tB in wPMale.Children.OfType<TextBox>())
             {
                 tB.Text = texts[count];
                 tB.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
@@ -312,7 +384,7 @@ namespace Rangliste_TV_Oberi
 
         private void tBDisciplineName_GotFocus(object sender, RoutedEventArgs e)
         {
-                gotfoc(tBDisciplineName);
+            gotfoc(tBDisciplineName);
         }
 
         private void tBDisciplineName_LostFocus(object sender, RoutedEventArgs e)
@@ -411,6 +483,9 @@ namespace Rangliste_TV_Oberi
             foclost(tBDiscSetName, "Name");
         }
         #endregion
+
+
+        
 
 
 

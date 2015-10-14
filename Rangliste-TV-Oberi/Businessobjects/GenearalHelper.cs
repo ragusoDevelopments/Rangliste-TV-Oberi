@@ -37,5 +37,30 @@ namespace Rangliste_TV_Oberi.Businessobjects
                 count++;
             }
         }
+
+        public void prepareTextBoxes(WrapPanel wPAddDisc)
+        {
+            WrapPanel[] panels = new WrapPanel[2];
+            int count = 0;
+
+            foreach(TextBox v in wPAddDisc.Children.OfType<TextBox>())
+            {
+                v.Foreground = Brushes.Black;
+            }
+
+            foreach(WrapPanel v in wPAddDisc.Children.OfType<WrapPanel>())
+            {
+                panels[count] = v;
+                count++;
+            }
+
+            foreach(WrapPanel wP in panels)
+            {
+                foreach (TextBox tB in wP.Children.OfType<TextBox>())
+                {
+                    tB.Foreground = Brushes.Black;
+                }
+            }
+        }
     }
 }

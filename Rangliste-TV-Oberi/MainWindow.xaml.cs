@@ -49,17 +49,17 @@ namespace Rangliste_TV_Oberi
         {
             RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
 
-            IEnumerable<RL_Datacontext.MaleDisciplinePoints> parts = from p in dc.MaleDisciplinePoints
+            IEnumerable<RL_Datacontext.Disciplines> parts = from p in dc.Disciplines
                                                                      select p;
 
             foreach(var v in parts)
             {
                 ListViewItem item = new ListViewItem();
-                item.Content = v.Result.ToString() + " " + v.Points.ToString();
+                item.Content = v.ResultIncrF;
                 ListView1.Items.Add(item);
             }
 
-            
+            /*
             IEnumerable<RL_Datacontext.FemaleDisciplinePoints> partsF = from p in dc.FemaleDisciplinePoints
                                                                         select p;
 
@@ -69,7 +69,7 @@ namespace Rangliste_TV_Oberi
                 item.Content = v.Result.ToString() + " " + v.Points.ToString();
                 ListView1_Copy.Items.Add(item);
             }
-
+            */
            
         }
 
