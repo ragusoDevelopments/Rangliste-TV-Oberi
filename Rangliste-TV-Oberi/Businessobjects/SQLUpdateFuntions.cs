@@ -29,7 +29,7 @@ namespace Rangliste_TV_Oberi.Businessobjects
             switch (gender)
             {
                 case "male":
-                    disc.MinResult =  Math.Round(minRes, 1);
+                    disc.MinResult = Math.Round(minRes, 1);
                     disc.ResultIncr = Math.Round(resIncr, 1);
                     disc.MinPoints = minPts;
                     disc.PointsIncr = ptsIncr;
@@ -39,7 +39,7 @@ namespace Rangliste_TV_Oberi.Businessobjects
                     break;
 
                 case "female":
-                    disc.MinResultF =  Math.Round(minResF, 1);
+                    disc.MinResultF = Math.Round(minResF, 1);
                     disc.ResultIncrF = Math.Round(resIncrF, 1);
                     disc.MinPointsF = minPtsF;
                     disc.PointsIncrF = ptsIncrF;
@@ -49,12 +49,12 @@ namespace Rangliste_TV_Oberi.Businessobjects
                     break;
 
                 case "both":
-                    disc.MinResult =  Math.Round(minRes, 1);
+                    disc.MinResult = Math.Round(minRes, 1);
                     disc.ResultIncr = Math.Round(resIncr, 1);
                     disc.MinPoints = minPts;
                     disc.PointsIncr = ptsIncr;
 
-                    disc.MinResultF =  Math.Round(minResF, 1);
+                    disc.MinResultF = Math.Round(minResF, 1);
                     disc.ResultIncrF = Math.Round(resIncrF, 1);
                     disc.MinPointsF = minPtsF;
                     disc.PointsIncrF = ptsIncrF;
@@ -92,6 +92,65 @@ namespace Rangliste_TV_Oberi.Businessobjects
             resIncrF.Text = disc.ResultIncrF.ToString();
             minPtsF.Text = disc.MinPointsF.ToString();
             ptsIncrF.Text = disc.PointsIncrF.ToString();
+        }
+
+        public static void filllBDiscSet(string discSetName, TextBox tBName, ListBox lBDiscSet)
+        {
+            RL_Datacontext.DisciplineSet discSet = (from d in dc.DisciplineSet
+                                                    where d.Name == discSetName
+                                                    select d).First();
+            tBName.Text = discSet.Name;
+
+            IEnumerable<RL_Datacontext.DisciplinesFromSet> discs = discSet.DisciplinesFromSet;
+
+            foreach (var v in discs)
+            {
+                ListBoxItem newItem = new ListBoxItem();
+                newItem.Content = v.Discipline;
+                lBDiscSet.Items.Add(newItem);
+            }
+        }
+
+        public static void updateDiscSet(string oldName, string newName, string[] disciplines)
+        {
+            RL_Datacontext.DisciplineSet set = (from d in dc.DisciplineSet
+                                                where d.Name == oldName
+                                                select d).First();
+
+            if (set == null)
+            {
+                MessageBox.Show("Der Disziplin-Satz wurde während dem Bearbeiten gelöscht");
+                return;
+            }
+
+            set.Name = newName;
+            dc.SubmitChanges();
+            set.DisciplinesFromSet.Clear();
+            foreach (var v in disciplines)
+            {
+                RL_Datacontext.DisciplinesFromSet newDiscFromSet = new RL_Datacontext.DisciplinesFromSet()
+                {
+                    Discipline = v
+                };
+                set.DisciplinesFromSet.Add(newDiscFromSet);
+            }
+
+            dc.SubmitChanges();
+        }
+
+        public static void filllBDiscSets(ListBox discSets)
+        {
+            discSets.Items.Clear();
+
+            IEnumerable<RL_Datacontext.DisciplineSet> sets = from s in dc.DisciplineSet
+                                                             select s;
+
+            foreach(RL_Datacontext.DisciplineSet discset in sets)
+            {
+                ListBoxItem item = new ListBoxItem();
+                item.Content = discset.Name;
+                discSets.Items.Add(item);
+            }
         }
     }
 }

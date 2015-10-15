@@ -2,12 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Rangliste_TV_Oberi.Einstellungen"
-        Title="Einstellungen" Height="473.925" Width="718" WindowStyle="ToolWindow" Closed="Window_Closed" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
+        Title="Einstellungen" Height="473.925" Width="728" WindowStyle="ToolWindow" Closed="Window_Closed" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TreeView Margin="0,0,505,0" SelectedItemChanged="TreeView_SelectedItemChanged">
+        <TreeView Margin="0,0,515,0" SelectedItemChanged="TreeView_SelectedItemChanged">
             <TreeViewItem Header="Disziplin hinzufügen" BorderBrush="White" OpacityMask="White" GotFocus="tVINewDisc_GotFocus"/>
             <TreeViewItem x:Name="tVINewDiscSet" Header="Neuen Disziplin-Satz erstellen" GotFocus="tVINewDiscSet_GotFocus" />
             <TreeViewItem x:Name="tVIDelDiscSet" Header="Disziplinsatz löschen/bearbeiten" GotFocus="tVIDelDiscSet_GotFocus"/>
@@ -15,6 +15,8 @@
 
         <Label Content="Disziplinen" Margin="258,0,348,402"/>
         <ListBox x:Name="lBDisciplines" HorizontalAlignment="Left" Height="364" VerticalAlignment="Top" Width="176" Margin="205,33,0,0" SelectionMode="Multiple"/>
+        <Button x:Name="btnDeletDisc" Content="Löschen" HorizontalAlignment="Left" Height="37" Margin="205,397,0,0" VerticalAlignment="Top" Width="90" Background="White" BorderBrush="White" Click="btnDeletDisc_Click"/>
+        <Button x:Name="btnEditDisc" Content="Bearbeiten" HorizontalAlignment="Left" Height="37" Margin="295,397,0,0" VerticalAlignment="Top" Width="86" Background="White" BorderBrush="White" Click="btnEditDisc_Click"/>
 
         <WrapPanel x:Name="wPAddDisc" RenderTransformOrigin="0.62,0.439" Margin="381,0,184,0" Visibility="Hidden">
             <TextBox Text="Name" x:Name="tBDisciplineName" Height="23" Width="127" Margin="5,33,0,0" GotFocus="tBDisciplineName_GotFocus" LostFocus="tBDisciplineName_LostFocus" Foreground="#FF7E7E7E" Padding="0" />
@@ -39,23 +41,20 @@
                 <Button Content="Save" Margin="5,2,0,0" Width="127" Height="26" BorderBrush="White" OpacityMask="White" Background="White" Click="btnDiscSave_Click"/>
             </WrapPanel>
         </WrapPanel>
-        <WrapPanel x:Name="wPDiscSet" HorizontalAlignment="Left" Height="444" Margin="381,0,0,0" VerticalAlignment="Top" Width="157" Visibility="Hidden">
+        <WrapPanel x:Name="wPDiscSet" HorizontalAlignment="Left" Height="444" Margin="381,0,0,0" VerticalAlignment="Top" Width="157">
             <TextBox x:Name="tBDiscSetName" Height="23" TextWrapping="Wrap" Text="Name" Width="145" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBDiscSetName_GotFocus" LostFocus="tBDiscSetName_LostFocus"/>
-
-            <Button x:Name="btnAddDiscsToSet" Content="Disziplinen hinzufügen" Height="28" Width="143" Background="White" BorderBrush="White" Margin="5,18,0,0" Click="btnAddDiscsToSet_Click"/>
+            <Button x:Name="btnAddDiscsToSet_Copy" Content="Disziplinen hinzufügen" Height="28" Width="143" Background="White" BorderBrush="White" Margin="5,5,0,0" Click="btnAddDiscsToSet_Click"/>
+            <Button x:Name="btnDelDiscsFromSet" Content="Disziplinen entfernen" Height="28" Width="143" Background="White" BorderBrush="White" Margin="5,3,0,0" Click="btnDelDiscsFromSet_Click"/>
             <Label Content="Disziplinen" Margin="40,1,0,0" Width="75"/>
-            <ListBox x:Name="lBDiscSet" Height="296" Width="145" Margin="5,0,0,0"/>
-            <Button x:Name="btnDiscSetSave" Content="Save" Height="43" Width="145" Margin="5,0,0,0" Background="White" BorderBrush="White" Click="btnDiscSetSave_Click"/>
+            <ListBox x:Name="lBDiscSet" Height="278" Width="145" Margin="5,0,0,0"/>
+            <Button x:Name="btnDiscSetSave" Content="Save" Height="34" Width="145" Margin="5,3,0,0" Background="White" BorderBrush="White" Click="btnDiscSetSave_Click"/>
         </WrapPanel>
 
-        <Button x:Name="btnDeletDisc" Content="Löschen" HorizontalAlignment="Left" Height="37" Margin="205,397,0,0" VerticalAlignment="Top" Width="90" Background="White" BorderBrush="White" Click="btnDeletDisc_Click"/>
-        <Button x:Name="btnEditDisc" Content="Bearbeiten" HorizontalAlignment="Left" Height="37" Margin="295,397,0,0" VerticalAlignment="Top" Width="86" Background="White" BorderBrush="White" Click="btnEditDisc_Click"/>
-
-        <WrapPanel x:Name="wPEditDiscSets" HorizontalAlignment="Left" Height="444" Margin="381,0,0,0" VerticalAlignment="Top" Width="176">
+        <WrapPanel x:Name="wPEditDiscSets" HorizontalAlignment="Left" Height="444" Margin="534,1,0,-1" VerticalAlignment="Top" Width="176">
             <Label Content="Disziplin-Sätze" Margin="44,0,0,0"/>
-            <ListBox x:Name="lBEditDiscSets" Height="364" Width="172" Margin="2,7,0,0"/>
+            <ListBox x:Name="lBEditDiscSets" Height="364" Width="172" Margin="2,7,0,0" SelectionMode="Multiple"/>
             <Button x:Name="btnDeletDiscSet" Content="Löschen" HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="88" Background="White" BorderBrush="White" Margin="2,0,0,0" Click="btnDeletDiscSet_Click"/>
-            <Button x:Name="btnEditDiscSet" Content="Bearbeiten" HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="84" Background="White" BorderBrush="White"/>
+            <Button x:Name="btnEditDiscSet" Content="Bearbeiten" HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="84" Background="White" BorderBrush="White" Click="btnEditDiscSet_Click"/>
         </WrapPanel>
     </Grid>
 </Window>

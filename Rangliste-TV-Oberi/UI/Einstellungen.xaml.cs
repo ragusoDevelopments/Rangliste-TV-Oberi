@@ -21,6 +21,7 @@ namespace Rangliste_TV_Oberi
     {
         #region Variables
         private string SaveButtonMode;
+        private string DiscSetSaveButtonMode;
         Businessobjects.GenearalHelper helper = new Businessobjects.GenearalHelper();
 
         string disciplineName;
@@ -36,12 +37,14 @@ namespace Rangliste_TV_Oberi
 
         string[] texts = new string[] { "Schlechtestes Ergebnis", "Ergebnisabstufung", "Minimalpunktzahl", "Punkteabstufung" };
         string oldDisciplineName;
+        string oldDiscSetName;
         #endregion
 
         public Einstellungen()
         {
             InitializeComponent();
             SaveButtonMode = "insert";
+            DiscSetSaveButtonMode = "insert";
             helper.filllBDiscipline(lBDisciplines);
             this.Topmost = true; //testpurpose
         }
@@ -117,6 +120,7 @@ namespace Rangliste_TV_Oberi
                         Businessobjects.SQLUpdateFuntions.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "female");
                         break;
                 }
+                wPAddDisc.Visibility = Visibility.Hidden;
                 cleanupNewDisc();
 
             }
@@ -127,6 +131,26 @@ namespace Rangliste_TV_Oberi
             helper.filllBDiscipline(lBDisciplines);
             MainWindow main = (MainWindow)App.Current.MainWindow;
             main.listTable();
+        }
+
+        private void btnEditDisc_Click(object sender, RoutedEventArgs e)
+        {
+            SaveButtonMode = "update";
+            wPAddDisc.Visibility = Visibility.Visible;
+
+            if (lBDisciplines.SelectedItems.Count != 1)
+                return;
+            helper.prepareTextBoxes(wPAddDisc);
+
+
+            char[] split = new char[] { Convert.ToChar(":") };
+            string currentName = lBDisciplines.SelectedItem.ToString().Split(split)[1];
+
+            Businessobjects.SQLUpdateFuntions.fillwPAddDisc(currentName.Trim(), tBDisciplineName, cBoxResultType, tBMinRes, tBResIncr, tBMinPts, tBPtsIncr, tBMinResF, tBResIncrF, tBMinPtsF, tBPtsIncrF);
+
+            oldDisciplineName = tBDisciplineName.Text;
+
+            doFoclostFunctionByEdit();
         }
 
         private void btnDeletDisc_Click(object sender, RoutedEventArgs e)
@@ -152,24 +176,64 @@ namespace Rangliste_TV_Oberi
                     lBDiscSet.Items.Add(newItem);
                 }
             }
+            lBDisciplines.SelectedItems.Clear();
+        }
+
+        private void btnDelDiscsFromSet_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxItem[] items = new ListBoxItem[lBDiscSet.SelectedItems.Count];
+            int count = 0;
+
+            foreach (ListBoxItem item in lBDiscSet.SelectedItems)
+            {
+                items[count] = item;
+                count++;
+            }
+
+            foreach (var v in items)
+            {
+                lBDiscSet.Items.Remove(v);
+            }
         }
 
         private void btnDiscSetSave_Click(object sender, RoutedEventArgs e)
         {
-            if (tBDiscSetName.Foreground.ToString() == "#FF7E7E7E" || lBDiscSet.Items.Count == 0 || !Businessobjects.SQLAddAndReturnFunctions.checkDisciplineSets(tBDiscSetName.Text))
-                return;
-
-            string[] disciplines = new string[lBDiscSet.Items.Count];
-
-            int itemCount = lBDiscSet.Items.Count;
-
-            for (int i = 0; i < itemCount; i++)
+            if (DiscSetSaveButtonMode == "insert")
             {
-                ListBoxItem item = (ListBoxItem)lBDiscSet.Items[i];
-                disciplines[i] = item.Content.ToString();
-            }
+                if (tBDiscSetName.Foreground.ToString() == "#FF7E7E7E" || lBDiscSet.Items.Count == 0 || !Businessobjects.SQLAddAndReturnFunctions.checkDisciplineSets(tBDiscSetName.Text))
+                    return;
 
-            Businessobjects.SQLAddAndReturnFunctions.addDiscSet(tBDiscSetName.Text, disciplines);
+                string[] disciplines = new string[lBDiscSet.Items.Count];
+
+                int itemCount = lBDiscSet.Items.Count;
+
+                for (int i = 0; i < itemCount; i++)
+                {
+                    ListBoxItem item = (ListBoxItem)lBDiscSet.Items[i];
+                    disciplines[i] = item.Content.ToString();
+                }
+
+                Businessobjects.SQLAddAndReturnFunctions.addDiscSet(tBDiscSetName.Text, disciplines);
+            }
+            else
+            {
+                if (tBDiscSetName.Foreground.ToString() == "#FF7E7E7E" || lBDiscSet.Items.Count == 0)
+                    return;
+
+
+                string[] disciplines = new string[lBDiscSet.Items.Count];
+
+                int itemCount = lBDiscSet.Items.Count;
+
+                for (int i = 0; i < itemCount; i++)
+                {
+                    ListBoxItem item = (ListBoxItem)lBDiscSet.Items[i];
+                    disciplines[i] = item.Content.ToString();
+                }
+
+                Businessobjects.SQLUpdateFuntions.updateDiscSet(oldDiscSetName, tBDiscSetName.Text, disciplines);
+                Businessobjects.SQLUpdateFuntions.filllBDiscSets(lBEditDiscSets);
+            }
 
             #region cleanup
             lBDiscSet.Items.Clear();
@@ -178,24 +242,26 @@ namespace Rangliste_TV_Oberi
             #endregion
         }
 
-        private void btnEditDisc_Click(object sender, RoutedEventArgs e)
+        private void btnEditDiscSet_Click(object sender, RoutedEventArgs e)
         {
-            SaveButtonMode = "update";
-            wPAddDisc.Visibility = Visibility.Visible;
-
-            if (lBDisciplines.SelectedItems.Count != 1)
+            if (lBEditDiscSets.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("Bitte nur einen Disziplin-Satz zum bearbeiten auswählen");
                 return;
-            helper.prepareTextBoxes(wPAddDisc);
+            }
+                
+            DiscSetSaveButtonMode = "update";
 
+            this.Title = lBEditDiscSets.SelectedItems.Count.ToString();
 
-            char[] split = new char[] { Convert.ToChar(":") };
-            string currentName = lBDisciplines.SelectedItem.ToString().Split(split)[1];
+            
+            ListBoxItem item = (ListBoxItem)lBEditDiscSets.SelectedItems[0];
+            string discSetName = item.Content.ToString();
+            tBDiscSetName.Foreground = Brushes.Black;
 
-            Businessobjects.SQLUpdateFuntions.fillwPAddDisc(currentName.Trim(), tBDisciplineName, cBoxResultType, tBMinRes, tBResIncr, tBMinPts, tBPtsIncr, tBMinResF, tBResIncrF, tBMinPtsF, tBPtsIncrF);
-
-            oldDisciplineName = tBDisciplineName.Text;
-
-            doFoclostFunctionByEdit();
+            Businessobjects.SQLUpdateFuntions.filllBDiscSet(discSetName, tBDiscSetName, lBDiscSet);
+            oldDiscSetName = discSetName;
+            lBEditDiscSets.SelectedItems.Clear();
         }
 
         private void btnDeletDiscSet_Click(object sender, RoutedEventArgs e)
@@ -229,19 +295,22 @@ namespace Rangliste_TV_Oberi
 
         private void tVINewDiscSet_GotFocus(object sender, RoutedEventArgs e)
         {
+            DiscSetSaveButtonMode = "insert";
             wPDiscSet.Visibility = Visibility.Visible;
         }
 
         private void tVIDelDiscSet_GotFocus(object sender, RoutedEventArgs e)
         {
             wPEditDiscSets.Visibility = Visibility.Visible;
-            Businessobjects.SQLDeleteFunctions.filllBDiscSets(lBEditDiscSets);
+            wPDiscSet.Visibility = Visibility.Visible;
+            Businessobjects.SQLUpdateFuntions.filllBDiscSets(lBEditDiscSets);
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             wPAddDisc.Visibility = Visibility.Hidden;
             wPDiscSet.Visibility = Visibility.Hidden;
+            wPEditDiscSets.Visibility = Visibility.Hidden;
             wPEditDiscSets.Visibility = Visibility.Hidden;
         }
 
@@ -484,27 +553,7 @@ namespace Rangliste_TV_Oberi
         }
         #endregion
 
-
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }
