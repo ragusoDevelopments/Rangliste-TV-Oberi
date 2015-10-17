@@ -39,7 +39,7 @@
             <ComboBoxItem Content="nicht gestartet"/>
             <ComboBoxItem Content="Unfall"/>
         </ComboBox>
-        <Button Name="btnAdd" Content="Hinzufügen" HorizontalAlignment="Left" Height="95" Grid.Row="3" VerticalAlignment="Top" Width="323" FontSize="24" Background="White" BorderBrush="White" OpacityMask="White" Margin="-9,65,0,0" Grid.RowSpan="2" Click="btnAdd_Click" Grid.ColumnSpan="2"/>
+        <Button Name="btnAdd" Content="Hinzufügen" HorizontalAlignment="Left" Height="95" Grid.Row="3" VerticalAlignment="Top" Width="314" FontSize="24" Background="White" BorderBrush="White" OpacityMask="White" Margin="0,65,0,0" Grid.RowSpan="2" Click="btnAdd_Click" Grid.ColumnSpan="2"/>
         <Label Name="lblWarning" Content="Jahrgang: &#xD;&#xA;Ungültiges Zeichen" HorizontalAlignment="Left" Height="48" Margin="142,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="172" Background="White" Foreground="#FFE00000" Grid.ColumnSpan="2" BorderBrush="White" Visibility="Hidden"/>
 
     </Grid>

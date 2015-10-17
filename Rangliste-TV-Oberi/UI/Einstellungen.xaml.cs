@@ -23,6 +23,7 @@ namespace Rangliste_TV_Oberi
         private string SaveButtonMode;
         private string DiscSetSaveButtonMode;
         Businessobjects.GenearalHelper helper = new Businessobjects.GenearalHelper();
+        Businessobjects.Discipline discipine = new Businessobjects.Discipline();
 
         string disciplineName;
         bool resIsDistance;
@@ -45,8 +46,7 @@ namespace Rangliste_TV_Oberi
             InitializeComponent();
             SaveButtonMode = "insert";
             DiscSetSaveButtonMode = "insert";
-            helper.filllBDiscipline(lBDisciplines);
-            this.Topmost = true; //testpurpose
+            discipine.filllBDiscipline(lBDisciplines);
         }
 
         private void btnDiscSave_Click(object sender, RoutedEventArgs e)
@@ -54,7 +54,7 @@ namespace Rangliste_TV_Oberi
             #region SaveButtonMode = "insert"
             if (SaveButtonMode == "insert")
             {
-                if (Businessobjects.SQLAddAndReturnFunctions.checkDisciplines(tBDisciplineName.Text))
+                if (discipine.checkDisciplines(tBDisciplineName.Text))
                 {
                     switch (checkTextBoxes())
                     {
@@ -62,21 +62,21 @@ namespace Rangliste_TV_Oberi
                             if (!PrepareVars(true))
                                 return;
 
-                            Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
+                            discipine.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
                             break;
 
                         case "female":
                             if (!PrepareVars(false))
                                 return;
 
-                            Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "female");
+                            discipine.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "female");
                             break;
 
                         case "both":
                             if (!PrepareVars(true) || !PrepareVars(false))
                                 return;
 
-                            Businessobjects.SQLAddAndReturnFunctions.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "both");
+                            discipine.addDiscipline(tBDisciplineName.Text, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "both");
                             break;
 
                         case "nothing":
@@ -103,21 +103,21 @@ namespace Rangliste_TV_Oberi
                         if (!PrepareVars(true))
                             return;
 
-                        Businessobjects.SQLUpdateFuntions.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
+                        discipine.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
                         break;
 
                     case "female":
                         if (!PrepareVars(false))
                             return;
 
-                        Businessobjects.SQLUpdateFuntions.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
+                        discipine.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
                         break;
 
                     case "both":
                         if (!PrepareVars(true) || !PrepareVars(false))
                             return;
-                        Businessobjects.SQLUpdateFuntions.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
-                        Businessobjects.SQLUpdateFuntions.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "female");
+                        discipine.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "male");
+                        discipine.updateDiscipline(oldDisciplineName, disciplineName, resIsDistance, minimalResult, resultIncrement, minimalPoints, pointsIncrement, minimalResultF, resultIncrementF, minimalPointsF, pointsIncrementF, "female");
                         break;
                 }
                 wPAddDisc.Visibility = Visibility.Hidden;
@@ -128,9 +128,7 @@ namespace Rangliste_TV_Oberi
 
 
 
-            helper.filllBDiscipline(lBDisciplines);
-            MainWindow main = (MainWindow)App.Current.MainWindow;
-            main.listTable();
+            discipine.filllBDiscipline(lBDisciplines);
         }
 
         private void btnEditDisc_Click(object sender, RoutedEventArgs e)
@@ -140,13 +138,14 @@ namespace Rangliste_TV_Oberi
 
             if (lBDisciplines.SelectedItems.Count != 1)
                 return;
+
             helper.prepareTextBoxes(wPAddDisc);
 
 
             char[] split = new char[] { Convert.ToChar(":") };
             string currentName = lBDisciplines.SelectedItem.ToString().Split(split)[1];
 
-            Businessobjects.SQLUpdateFuntions.fillwPAddDisc(currentName.Trim(), tBDisciplineName, cBoxResultType, tBMinRes, tBResIncr, tBMinPts, tBPtsIncr, tBMinResF, tBResIncrF, tBMinPtsF, tBPtsIncrF);
+            discipine.fillwPAddDisc(currentName.Trim(), tBDisciplineName, cBoxResultType, tBMinRes, tBResIncr, tBMinPts, tBPtsIncr, tBMinResF, tBResIncrF, tBMinPtsF, tBPtsIncrF);
 
             oldDisciplineName = tBDisciplineName.Text;
 
@@ -159,10 +158,10 @@ namespace Rangliste_TV_Oberi
             {
                 if (item.IsSelected)
                 {
-                    Businessobjects.SQLDeleteFunctions.deleteDiscipline(item.Content.ToString());
+                    discipine.deleteDiscipline(item.Content.ToString());
                 }
             }
-            helper.filllBDiscipline(lBDisciplines);
+            discipine.filllBDiscipline(lBDisciplines);
         }
 
         private void btnAddDiscsToSet_Click(object sender, RoutedEventArgs e)
@@ -200,7 +199,7 @@ namespace Rangliste_TV_Oberi
         {
             if (DiscSetSaveButtonMode == "insert")
             {
-                if (tBDiscSetName.Foreground.ToString() == "#FF7E7E7E" || lBDiscSet.Items.Count == 0 || !Businessobjects.SQLAddAndReturnFunctions.checkDisciplineSets(tBDiscSetName.Text))
+                if (tBDiscSetName.Foreground.ToString() == "#FF7E7E7E" || lBDiscSet.Items.Count == 0 || !discipine.checkDisciplineSets(tBDiscSetName.Text))
                     return;
 
                 string[] disciplines = new string[lBDiscSet.Items.Count];
@@ -213,7 +212,7 @@ namespace Rangliste_TV_Oberi
                     disciplines[i] = item.Content.ToString();
                 }
 
-                Businessobjects.SQLAddAndReturnFunctions.addDiscSet(tBDiscSetName.Text, disciplines);
+                discipine.addDiscSet(tBDiscSetName.Text, disciplines);
             }
             else
             {
@@ -231,8 +230,8 @@ namespace Rangliste_TV_Oberi
                     disciplines[i] = item.Content.ToString();
                 }
 
-                Businessobjects.SQLUpdateFuntions.updateDiscSet(oldDiscSetName, tBDiscSetName.Text, disciplines);
-                Businessobjects.SQLUpdateFuntions.filllBDiscSets(lBEditDiscSets);
+                discipine.updateDiscSet(oldDiscSetName, tBDiscSetName.Text, disciplines);
+                discipine.filllBDiscSets(lBEditDiscSets);
             }
 
             #region cleanup
@@ -244,22 +243,22 @@ namespace Rangliste_TV_Oberi
 
         private void btnEditDiscSet_Click(object sender, RoutedEventArgs e)
         {
-            if (lBEditDiscSets.SelectedItems.Count != 1)
+            if (lBEditDiscSets.SelectedItems.Count > 1)
             {
                 MessageBox.Show("Bitte nur einen Disziplin-Satz zum bearbeiten auswählen");
                 return;
             }
+
+            if (lBEditDiscSets.SelectedItems.Count == 0)
+                return;
                 
             DiscSetSaveButtonMode = "update";
 
-            this.Title = lBEditDiscSets.SelectedItems.Count.ToString();
-
-            
             ListBoxItem item = (ListBoxItem)lBEditDiscSets.SelectedItems[0];
             string discSetName = item.Content.ToString();
             tBDiscSetName.Foreground = Brushes.Black;
 
-            Businessobjects.SQLUpdateFuntions.filllBDiscSet(discSetName, tBDiscSetName, lBDiscSet);
+            discipine.filllBDiscSet(discSetName, tBDiscSetName, lBDiscSet);
             oldDiscSetName = discSetName;
             lBEditDiscSets.SelectedItems.Clear();
         }
@@ -270,10 +269,10 @@ namespace Rangliste_TV_Oberi
             {
                 if (item.IsSelected)
                 {
-                    Businessobjects.SQLDeleteFunctions.deleteDiscSet(item.Content.ToString());
+                    discipine.deleteDiscSet(item.Content.ToString());
                 }
             }
-            Businessobjects.SQLDeleteFunctions.filllBDiscSets(lBEditDiscSets);
+            discipine.filllBDiscSets(lBEditDiscSets);
         }
 
 
@@ -303,7 +302,7 @@ namespace Rangliste_TV_Oberi
         {
             wPEditDiscSets.Visibility = Visibility.Visible;
             wPDiscSet.Visibility = Visibility.Visible;
-            Businessobjects.SQLUpdateFuntions.filllBDiscSets(lBEditDiscSets);
+            discipine.filllBDiscSets(lBEditDiscSets);
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

@@ -20,6 +20,8 @@ namespace Rangliste_TV_Oberi
     /// </summary>
     public partial class Erfassung : Window
     {
+        Businessobjects.Participant participant = new Businessobjects.Participant();
+
         private MainWindow main = (MainWindow)App.Current.MainWindow;
 
         RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
@@ -54,7 +56,7 @@ namespace Rangliste_TV_Oberi
             else
                 return;
 
-            Businessobjects.SQLAddAndReturnFunctions.addParticipant(tBName.Text, gender, yearOfBirth, cBStatus.SelectedIndex);
+            participant.addParticipant(tBName.Text, gender, yearOfBirth, cBStatus.SelectedIndex);
 
 
             tBName.Text = "";
@@ -62,8 +64,6 @@ namespace Rangliste_TV_Oberi
             rBMale.IsChecked = false;
             rBFemale.IsChecked = false;
             cBStatus.SelectedIndex = 0;
-
-            
         }
 
         private void Window_Closed(object sender, EventArgs e)

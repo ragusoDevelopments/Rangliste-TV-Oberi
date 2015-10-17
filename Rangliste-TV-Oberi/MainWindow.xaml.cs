@@ -20,6 +20,8 @@ namespace Rangliste_TV_Oberi
     /// </summary>
     public partial class MainWindow : Window
     {
+        Businessobjects.Participant participant = new Businessobjects.Participant();
+
         public bool erfassungIsOpen = false;
         public bool infoIsOpen = false;
         public bool einstellungenIsOpen = false;
@@ -32,48 +34,11 @@ namespace Rangliste_TV_Oberi
             Erfassung erfassung = new Erfassung();
             erfassung.Show();
             erfassungIsOpen = true;
-            Einstellungen einstellungen = new Einstellungen();
-            einstellungen.Show();
-            einstellungenIsOpen = true;
             #endregion
 
-            Businessobjects.SQLAddAndReturnFunctions.fillCategoriesTable();
-            Businessobjects.SQLAddAndReturnFunctions.fillStatusTable();
-            listTable();//delete when finished
+            participant.fillCategoriesTable();
+            participant.fillStatusTable();
         }
-
-
-
-        //testpurpose
-        public void listTable()
-        {
-            RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
-
-            IEnumerable<RL_Datacontext.Disciplines> parts = from p in dc.Disciplines
-                                                                     select p;
-
-            foreach(var v in parts)
-            {
-                ListViewItem item = new ListViewItem();
-                item.Content = v.ResultIncrF;
-                ListView1.Items.Add(item);
-            }
-
-            /*
-            IEnumerable<RL_Datacontext.FemaleDisciplinePoints> partsF = from p in dc.FemaleDisciplinePoints
-                                                                        select p;
-
-            foreach (var v in partsF)
-            {
-                ListViewItem item = new ListViewItem();
-                item.Content = v.Result.ToString() + " " + v.Points.ToString();
-                ListView1_Copy.Items.Add(item);
-            }
-            */
-           
-        }
-
-
 
 
 
@@ -115,6 +80,50 @@ namespace Rangliste_TV_Oberi
         private void menuItemClose_Click(object sender, RoutedEventArgs e)
         {
             App.Current.Shutdown();
+        }
+
+
+
+
+
+
+        private void tBStartnumber_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (tBStartnumber.Foreground.ToString() == "#FF7E7E7E")
+            {
+                tBStartnumber.Text = "";
+                tBStartnumber.Foreground = Brushes.Black;
+            }
+        }
+
+        private void tBStartnumber_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if(tBStartnumber.Text == "")
+            {
+                tBStartnumber.Text = "Startnummer";
+                tBStartnumber.Foreground = (SolidColorBrush) new BrushConverter().ConvertFrom("#FF7E7E7E");
+            }
+        }
+
+        private void tBStartnumber_KeyDown(object sender, KeyEventArgs e)
+        {
+            int startnumber;
+            try
+            {
+                startnumber = Convert.ToInt32(tBStartnumber.Text);
+            }
+            catch(Exception)
+            {
+                return;
+            }
+            
+            RL_Datacontext.Participants part = participant.returnParticipant(startnumber);
+
+            if(e.Key == Key.Enter)
+            {
+                if (part == null)
+                    return;
+            }
         }
 
         

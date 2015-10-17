@@ -111,10 +111,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Businessobjects\Discipline.cs" />
     <Compile Include="Businessobjects\GenearalHelper.cs" />
-    <Compile Include="Businessobjects\SQLAddAndReturnFunctions.cs" />
-    <Compile Include="Businessobjects\SQLDeleteFunctions.cs" />
-    <Compile Include="Businessobjects\SQLUpdateFuntions.cs" />
+    <Compile Include="Businessobjects\Participant.cs" />
     <Compile Include="RL Datacontext\RLDB.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

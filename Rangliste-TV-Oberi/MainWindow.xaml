@@ -23,26 +23,7 @@
             </MenuItem>
         </Menu>
         
-        <Label Content="Resultate" HorizontalAlignment="Left" Height="59" Margin="237,0,0,0" VerticalAlignment="Top" Width="160" FontSize="36" Grid.ColumnSpan="2"/>
-        <Label Content="Startnummer" HorizontalAlignment="Left" Height="23" Margin="10,49,0,0" VerticalAlignment="Top" Width="82"/>
-        <TextBox HorizontalAlignment="Left" Height="19" Margin="92,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="53"/>
-        
-        <ListView Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="299" Margin="204,64,0,0" VerticalAlignment="Top" Width="193" Name="ListView1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
-        
-        <ListView HorizontalAlignment="Left" Height="299" Margin="86,64,0,0" VerticalAlignment="Top" Width="193" x:Name="ListView1_Copy" Grid.Column="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-
+        <Label Content="Update" HorizontalAlignment="Left" Height="59" Margin="254,0,0,0" VerticalAlignment="Top" Width="126" FontSize="36" Grid.ColumnSpan="2"/>
+        <TextBox Name="tBStartnumber" Text="Startnummer" HorizontalAlignment="Left" Height="19" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="78" Foreground="#FF7E7E7E" GotFocus="tBStartnumber_GotFocus" LostFocus="tBStartnumber_LostFocus" KeyDown="tBStartnumber_KeyDown"/>
     </Grid>
 </Window>

@@ -41,7 +41,7 @@
                 <Button Content="Save" Margin="5,2,0,0" Width="127" Height="26" BorderBrush="White" OpacityMask="White" Background="White" Click="btnDiscSave_Click"/>
             </WrapPanel>
         </WrapPanel>
-        <WrapPanel x:Name="wPDiscSet" HorizontalAlignment="Left" Height="444" Margin="381,0,0,0" VerticalAlignment="Top" Width="157">
+        <WrapPanel x:Name="wPDiscSet" HorizontalAlignment="Left" Height="444" Margin="381,0,0,0" VerticalAlignment="Top" Width="157" Visibility="Hidden">
             <TextBox x:Name="tBDiscSetName" Height="23" TextWrapping="Wrap" Text="Name" Width="145" Margin="5,5,0,0" Foreground="#FF7E7E7E" GotFocus="tBDiscSetName_GotFocus" LostFocus="tBDiscSetName_LostFocus"/>
             <Button x:Name="btnAddDiscsToSet_Copy" Content="Disziplinen hinzufügen" Height="28" Width="143" Background="White" BorderBrush="White" Margin="5,5,0,0" Click="btnAddDiscsToSet_Click"/>
             <Button x:Name="btnDelDiscsFromSet" Content="Disziplinen entfernen" Height="28" Width="143" Background="White" BorderBrush="White" Margin="5,3,0,0" Click="btnDelDiscsFromSet_Click"/>
@@ -50,7 +50,7 @@
             <Button x:Name="btnDiscSetSave" Content="Save" Height="34" Width="145" Margin="5,3,0,0" Background="White" BorderBrush="White" Click="btnDiscSetSave_Click"/>
         </WrapPanel>
 
-        <WrapPanel x:Name="wPEditDiscSets" HorizontalAlignment="Left" Height="444" Margin="534,1,0,-1" VerticalAlignment="Top" Width="176">
+        <WrapPanel x:Name="wPEditDiscSets" HorizontalAlignment="Left" Height="444" Margin="534,1,0,-1" VerticalAlignment="Top" Width="176" Visibility="Hidden">
             <Label Content="Disziplin-Sätze" Margin="44,0,0,0"/>
             <ListBox x:Name="lBEditDiscSets" Height="364" Width="172" Margin="2,7,0,0" SelectionMode="Multiple"/>
             <Button x:Name="btnDeletDiscSet" Content="Löschen" HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="88" Background="White" BorderBrush="White" Margin="2,0,0,0" Click="btnDeletDiscSet_Click"/>

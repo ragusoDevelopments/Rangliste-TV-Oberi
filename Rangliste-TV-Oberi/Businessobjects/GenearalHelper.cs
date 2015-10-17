@@ -11,22 +11,6 @@ namespace Rangliste_TV_Oberi.Businessobjects
 {
     class GenearalHelper
     {
-        public void filllBDiscipline(ListBox lBDisciplines)
-        {
-            RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
-            lBDisciplines.Items.Clear();
-
-            IEnumerable<RL_Datacontext.Disciplines> discs = Businessobjects.SQLAddAndReturnFunctions.returnDisciplines(null);
-
-            foreach (var v in discs)
-            {
-                ListBoxItem newItem = new ListBoxItem();
-                newItem.Content = v.DisciplineName;
-
-                lBDisciplines.Items.Add(newItem);
-            }
-        }
-
         public void cleanupTextBoxes(TextBox[] tBs, string[] texts)
         {
             int count = 0;
@@ -43,14 +27,14 @@ namespace Rangliste_TV_Oberi.Businessobjects
             WrapPanel[] panels = new WrapPanel[2];
             int count = 0;
 
-            foreach(TextBox v in wPAddDisc.Children.OfType<TextBox>())
+            foreach(TextBox tB in wPAddDisc.Children.OfType<TextBox>())
             {
-                v.Foreground = Brushes.Black;
+                tB.Foreground = Brushes.Black;
             }
 
-            foreach(WrapPanel v in wPAddDisc.Children.OfType<WrapPanel>())
+            foreach(WrapPanel wP in wPAddDisc.Children.OfType<WrapPanel>())
             {
-                panels[count] = v;
+                panels[count] = wP;
                 count++;
             }
 
