@@ -86,7 +86,7 @@ namespace Rangliste_TV_Oberi
             #region fill categories
             IEnumerable<RL_Datacontext.Results> results = participant.Results;
 
-            foreach(var v in results)
+            foreach (var v in results)
             {
                 addDisciplineToUI(v.Discipline, (float)v.Result);
             }
@@ -175,7 +175,11 @@ namespace Rangliste_TV_Oberi
 
         private void cBAddDiscipline_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string disciplineToAdd = cBAddDiscipline.SelectedItem.ToString();
+            string disciplineToAdd = "";
+            if (cBAddDiscipline.SelectedIndex != -1)
+                disciplineToAdd = cBAddDiscipline.SelectedItem.ToString();
+            else
+                return;
 
             if (cBAddDiscipline.SelectedIndex != -1 && checkDisciplineExisting(disciplineToAdd))
                 addDisciplineToUI(disciplineToAdd, 0);
@@ -265,7 +269,11 @@ namespace Rangliste_TV_Oberi
 
         private void cBAddDisciplineSet_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string disciplineSetToAdd = cBAddDisciplineSet.SelectedItem.ToString();
+            string disciplineSetToAdd = "";
+            if (cBAddDisciplineSet.SelectedIndex != -1)
+                disciplineSetToAdd = cBAddDisciplineSet.SelectedItem.ToString();
+            else
+                return;
 
             RL_Datacontext.DisciplineSet set = _discipline.returnDisciplineSets(disciplineSetToAdd).First();
 
@@ -292,28 +300,24 @@ namespace Rangliste_TV_Oberi
 
             if (convertValue(tBYear.Text) == -1)
                 return;
-            int year = (int) convertValue(tBYear.Text);
+            int year = (int)convertValue(tBYear.Text);
 
-            _participant.updateParticipant(participantId, tBName.Text, year, cBStatus.SelectedIndex, gender, wPDisciplines);
-
-            check();
-        }
-
-        private void check()//testpurpose
-        {
-            RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
-
-            RL_Datacontext.Participants part = (from p in dc.Participants
-                                                where p.Id == participantId
-                                                select p).First();
-            IEnumerable<RL_Datacontext.Results> results = part.Results;
-            foreach(var v in results)
+            if (_participant.updateParticipant(participantId, tBName.Text, year, cBStatus.SelectedIndex, gender, wPDisciplines))
+            #region cleanup
             {
-                ListBoxItem newItem = new ListBoxItem();
-                newItem.Content = v.Discipline + "\t" + v.Result;
-                lBres.Items.Add(newItem);
+                wPBasicInfo.Visibility = Visibility.Hidden;
+                wPDisciplines.Children.Clear();
+                cBAddDiscipline.SelectedIndex = -1;
+                cBAddDisciplineSet.SelectedIndex = -1;
+                wPDisciplineStuff.Visibility = Visibility.Hidden;
+
+                tBStartnumber.Text = "Startnummer";
+                tBStartnumber.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
             }
+            #endregion
+
         }
+
 
         private float convertValue(string value)
         {
@@ -321,8 +325,8 @@ namespace Rangliste_TV_Oberi
 
             try
             {
-               convertedValue = (float) Convert.ToDouble(value);
-               return convertedValue;
+                convertedValue = (float)Convert.ToDouble(value);
+                return convertedValue;
             }
             catch
             {
