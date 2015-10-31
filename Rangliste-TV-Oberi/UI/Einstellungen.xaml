@@ -46,7 +46,7 @@
             <Button x:Name="btnAddDiscsToSet_Copy" Content="Disziplinen hinzufügen" Height="28" Width="143" Background="White" BorderBrush="White" Margin="5,5,0,0" Click="btnAddDiscsToSet_Click"/>
             <Button x:Name="btnDelDiscsFromSet" Content="Disziplinen entfernen" Height="28" Width="143" Background="White" BorderBrush="White" Margin="5,3,0,0" Click="btnDelDiscsFromSet_Click"/>
             <Label Content="Disziplinen" Margin="40,1,0,0" Width="75"/>
-            <ListBox x:Name="lBDiscSet" Height="278" Width="145" Margin="5,0,0,0"/>
+            <ListBox x:Name="lBDiscSet" Height="278" Width="145" Margin="5,0,0,0" SelectionMode="Multiple"/>
             <Button x:Name="btnDiscSetSave" Content="Save" Height="34" Width="145" Margin="5,3,0,0" Background="White" BorderBrush="White" Click="btnDiscSetSave_Click"/>
         </WrapPanel>
 

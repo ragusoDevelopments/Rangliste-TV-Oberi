@@ -334,40 +334,6 @@ namespace Rangliste_TV_Oberi.Businessobjects
 
         }
 
-        /// <summary>
-        /// checks if a discipline set with the name discSetName alreasy exits
-        /// </summary>
-        /// <param name="discName">New disciplines name</param>
-        /// <returns>false if it already exits</returns>
-        public bool checkDisciplineSets(string discSetName)
-        {
-            IEnumerable<RL_Datacontext.DisciplineSet> discSets = from d in dc.DisciplineSet
-                                                                 where d.Name == discSetName
-                                                                 select d;
-
-            if (discSets.Count() == 0)
-                return true;
-            else
-                return false;
-
-        }
-
-        public void filllBDiscipline(ListBox lBDisciplines)
-        {
-            RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
-            lBDisciplines.Items.Clear();
-
-            IEnumerable<RL_Datacontext.Disciplines> discs = returnDisciplines(null);
-
-            foreach (var v in discs)
-            {
-                ListBoxItem newItem = new ListBoxItem();
-                newItem.Content = v.DisciplineName;
-
-                lBDisciplines.Items.Add(newItem);
-            }
-        }
-
         public void fillwPAddDisc(string currentName, TextBox name, ComboBox resType, TextBox minres, TextBox resIncr, TextBox minPts, TextBox ptsIncr, TextBox minresF, TextBox resIncrF, TextBox minPtsF, TextBox ptsIncrF)
         {
             RL_Datacontext.Disciplines disc = (from d in dc.Disciplines
@@ -388,6 +354,40 @@ namespace Rangliste_TV_Oberi.Businessobjects
             resIncrF.Text = disc.ResultIncrF.ToString();
             minPtsF.Text = disc.MinPointsF.ToString();
             ptsIncrF.Text = disc.PointsIncrF.ToString();
+        }
+
+        public void filllBDiscipline(ListBox lBDisciplines)
+        {
+            RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
+            lBDisciplines.Items.Clear();
+
+            IEnumerable<RL_Datacontext.Disciplines> discs = returnDisciplines(null);
+
+            foreach (var v in discs)
+            {
+                ListBoxItem newItem = new ListBoxItem();
+                newItem.Content = v.DisciplineName;
+
+                lBDisciplines.Items.Add(newItem);
+            }
+        }
+
+        /// <summary>
+        /// checks if a discipline set with the name discSetName alreasy exits
+        /// </summary>
+        /// <param name="discName">New disciplines name</param>
+        /// <returns>false if it already exits</returns>
+        public bool checkDisciplineSets(string discSetName)
+        {
+            IEnumerable<RL_Datacontext.DisciplineSet> discSets = from d in dc.DisciplineSet
+                                                                 where d.Name == discSetName
+                                                                 select d;
+
+            if (discSets.Count() == 0)
+                return true;
+            else
+                return false;
+
         }
 
         public void filllBDiscSet(string discSetName, TextBox tBName, ListBox lBDiscSet)
@@ -420,6 +420,24 @@ namespace Rangliste_TV_Oberi.Businessobjects
                 item.Content = discset.Name;
                 discSets.Items.Add(item);
             }
+        }
+
+        public IEnumerable<RL_Datacontext.DisciplineSet> returnDisciplineSets(string discSetName)
+        {
+            IEnumerable<RL_Datacontext.DisciplineSet> sets = null;
+
+            if (discSetName == null)
+                sets = from s in dc.DisciplineSet
+                       select s;
+
+            else
+                sets = from s in dc.DisciplineSet
+                       where s.Name == discSetName
+                       select s;
+
+
+
+            return sets;
         }
 
 

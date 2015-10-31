@@ -20,11 +20,14 @@ namespace Rangliste_TV_Oberi
     /// </summary>
     public partial class MainWindow : Window
     {
-        Businessobjects.Participant participant = new Businessobjects.Participant();
+        Businessobjects.Participant _participant = new Businessobjects.Participant();
+        Businessobjects.Discipline _discipline = new Businessobjects.Discipline();
 
         public bool erfassungIsOpen = false;
         public bool infoIsOpen = false;
         public bool einstellungenIsOpen = false;
+
+        int participantId = 0;
 
         public MainWindow()
         {
@@ -36,10 +39,59 @@ namespace Rangliste_TV_Oberi
             erfassungIsOpen = true;
             #endregion
 
-            participant.fillCategoriesTable();
-            participant.fillStatusTable();
+            _participant.fillCategoriesTable();
+            _participant.fillStatusTable();
         }
 
+
+        private void tBStartnumber_KeyDown(object sender, KeyEventArgs e)
+        {
+            updateComboBoxes();
+
+            #region checking stuff
+            if (e.Key != Key.Enter)
+                return;
+
+            int startnumber;
+            try
+            {
+                startnumber = Convert.ToInt32(tBStartnumber.Text);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
+            RL_Datacontext.Participants participant = _participant.returnParticipantByStartnumber(startnumber);
+            if (participant == null)
+                return;
+            #endregion
+
+            wPBasicInfo.Visibility = Visibility.Visible;
+            wPDisciplineStuff.Visibility = Visibility.Visible;
+            participantId = participant.Id;
+
+            #region fillBasicInformation
+            tBName.Text = participant.Name;
+            tBYear.Text = participant.YearOfBirth.ToString();
+            lblCategory.Content = participant.Category;
+            cBStatus.SelectedIndex = participant.StatusIndex;
+
+            if (participant.Gender == "male")
+                rBMale.IsChecked = true;
+            else
+                rBFemale.IsChecked = true;
+            #endregion
+
+            #region fill categories
+            IEnumerable<RL_Datacontext.Results> results = participant.Results;
+
+            foreach(var v in results)
+            {
+                addDisciplineToUI(v.Discipline, (float)v.Result);
+            }
+            #endregion
+        }
 
 
         private void menuItemInfo_Click(object sender, RoutedEventArgs e)
@@ -84,9 +136,6 @@ namespace Rangliste_TV_Oberi
 
 
 
-
-
-
         private void tBStartnumber_GotFocus(object sender, RoutedEventArgs e)
         {
             if (tBStartnumber.Foreground.ToString() == "#FF7E7E7E")
@@ -98,34 +147,196 @@ namespace Rangliste_TV_Oberi
 
         private void tBStartnumber_LostFocus(object sender, RoutedEventArgs e)
         {
-            if(tBStartnumber.Text == "")
+            if (tBStartnumber.Text == "")
             {
                 tBStartnumber.Text = "Startnummer";
-                tBStartnumber.Foreground = (SolidColorBrush) new BrushConverter().ConvertFrom("#FF7E7E7E");
+                tBStartnumber.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF7E7E7E");
             }
         }
 
-        private void tBStartnumber_KeyDown(object sender, KeyEventArgs e)
+
+
+        private void updateComboBoxes()
         {
-            int startnumber;
+            cBAddDiscipline.Items.Clear();
+            cBAddDisciplineSet.Items.Clear();
+
+            foreach (var v in _discipline.returnDisciplines(null))
+            {
+                cBAddDiscipline.Items.Add(new ComboBoxItem().Content = v.DisciplineName);
+            }
+
+            foreach (var v in _discipline.returnDisciplineSets(null))
+            {
+                cBAddDisciplineSet.Items.Add(new ComboBoxItem().Content = v.Name);
+            }
+
+        }
+
+        private void cBAddDiscipline_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string disciplineToAdd = cBAddDiscipline.SelectedItem.ToString();
+
+            if (cBAddDiscipline.SelectedIndex != -1 && checkDisciplineExisting(disciplineToAdd))
+                addDisciplineToUI(disciplineToAdd, 0);
+
+        }
+
+
+        private bool checkDisciplineExisting(string disciplineName)
+        {
+            IEnumerable<WrapPanel> panels = wPDisciplines.Children.OfType<WrapPanel>();
+
+            foreach (WrapPanel wP in panels)
+            {
+                foreach (Label lbl in wP.Children.OfType<Label>())
+                {
+                    if (lbl.Content.ToString() == disciplineName)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void addDisciplineToUI(string diciplineName, float value)
+        {
+            /*
+            <WrapPanel Height="28" Width="407" Background="#FFE2E2E2">
+                        <Label Content="Label" Height="23" Width="63"/>
+                        <Label Content="Ergebnis:" Height="26" Width="58"/>
+                        <TextBox Height="20" TextWrapping="Wrap" Text="TextBox" Width="120" Margin="0,1,0,0"/>
+                        <Button Height="28" Width="28" Margin="137,0,0,0" BorderBrush="#FFDDDDDD">
+                            <Image Source="Res/delete.png"/>
+                        </Button>
+                    </WrapPanel>*/
+
+            WrapPanel newWrapPanel = new WrapPanel();
+            newWrapPanel.Width = 407;
+            newWrapPanel.Height = 28;
+            newWrapPanel.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#FFE2E2E2");
+
+            Label newLabel = new Label();
+            newLabel.Height = 23;
+            newLabel.Width = 63;
+            newLabel.Content = diciplineName;
+            newLabel.Name = "lblDiscName";
+            newWrapPanel.Margin = new Thickness(3.0, 0.0, 0.0, 0.0);
+
+            Label labelResult = new Label();
+            labelResult.Height = 26;
+            labelResult.Width = 58;
+            labelResult.Content = "Resultat";
+            labelResult.Margin = new Thickness(3.0, 0.0, 0.0, 0.0);
+
+            TextBox newTextBox = new TextBox();
+            newTextBox.Margin = new Thickness(5.0, 0.0, 0.0, 0.0);
+            newTextBox.Width = 100;
+            newTextBox.Height = 20;
+            newTextBox.Text = value.ToString();
+
+            var brush = new ImageBrush();
+            brush.ImageSource = new BitmapImage(new Uri("C:\\Users\\Andrea\\Desktop\\Programme\\C#\\Rangliste TV-Oberi\\Rangliste-TV-Oberi\\Res\\delete.png", UriKind.Relative));
+
+            Button btnDelete = new Button();
+            btnDelete.Height = 28;
+            btnDelete.Width = 28;
+            btnDelete.Margin = new Thickness(137, 0, 0, 0);
+            btnDelete.Background = brush;
+            btnDelete.BorderThickness = new Thickness(0);
+            btnDelete.Click += btnDelete_Click;
+
+
+
+            newWrapPanel.Children.Add(newLabel);
+            newWrapPanel.Children.Add(labelResult);
+            newWrapPanel.Children.Add(newTextBox);
+            newWrapPanel.Children.Add(btnDelete);
+
+            wPDisciplines.Children.Add(newWrapPanel);
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            Button btnDelete = sender as Button;
+
+            wPDisciplines.Children.Remove((UIElement)btnDelete.Parent);
+        }
+
+        private void cBAddDisciplineSet_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string disciplineSetToAdd = cBAddDisciplineSet.SelectedItem.ToString();
+
+            RL_Datacontext.DisciplineSet set = _discipline.returnDisciplineSets(disciplineSetToAdd).First();
+
+            IEnumerable<RL_Datacontext.DisciplinesFromSet> discs = set.DisciplinesFromSet;
+
+            foreach (var v in discs)
+            {
+                if (checkDisciplineExisting(v.Discipline) && cBAddDisciplineSet.SelectedIndex != -1)
+                    addDisciplineToUI(v.Discipline, 0);
+            }
+
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            string gender;
+
+            if (rBMale.IsChecked == true)
+                gender = "male";
+            else if (rBFemale.IsChecked == true)
+                gender = "female";
+            else
+                return;
+
+            if (convertValue(tBYear.Text) == -1)
+                return;
+            int year = (int) convertValue(tBYear.Text);
+
+            _participant.updateParticipant(participantId, tBName.Text, year, cBStatus.SelectedIndex, gender, wPDisciplines);
+
+            check();
+        }
+
+        private void check()//testpurpose
+        {
+            RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
+
+            RL_Datacontext.Participants part = (from p in dc.Participants
+                                                where p.Id == participantId
+                                                select p).First();
+            IEnumerable<RL_Datacontext.Results> results = part.Results;
+            foreach(var v in results)
+            {
+                ListBoxItem newItem = new ListBoxItem();
+                newItem.Content = v.Discipline + "\t" + v.Result;
+                lBres.Items.Add(newItem);
+            }
+        }
+
+        private float convertValue(string value)
+        {
+            float convertedValue;
+
             try
             {
-                startnumber = Convert.ToInt32(tBStartnumber.Text);
+               convertedValue = (float) Convert.ToDouble(value);
+               return convertedValue;
             }
-            catch(Exception)
+            catch
             {
-                return;
-            }
-            
-            RL_Datacontext.Participants part = participant.returnParticipant(startnumber);
-
-            if(e.Key == Key.Enter)
-            {
-                if (part == null)
-                    return;
+                return -1f;
             }
         }
 
-        
+        private void tBYear_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (tBYear.Text.Length == 4 && convertValue(tBYear.Text) != -1 && _participant.getCategory((int)convertValue(tBYear.Text)) != "")
+            {
+                lblCategory.Content = _participant.getCategory((int)convertValue(tBYear.Text));
+            }
+        }
+
     }
 }

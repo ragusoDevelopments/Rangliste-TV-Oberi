@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Rangliste_TV_Oberi.Businessobjects
 {
@@ -39,29 +40,28 @@ namespace Rangliste_TV_Oberi.Businessobjects
         /// <param name="yearOfBirth"></param>
         public void addParticipant(string name, string gender, int yearOfBirth, int cBSelInd)
         {
-            DateTime dt = DateTime.Now;
             int startnumber = checkStartnumbers() + 1;
-
-            IEnumerable<RL_Datacontext.Status> state = from c in dc.Status
-                                                       where c.SelectedIndex == cBSelInd
-                                                       select c;
 
             RL_Datacontext.Participants newPart = new RL_Datacontext.Participants()
             {
                 Startnumber = startnumber,
                 Name = name,
-                Category = getCategory(yearOfBirth, dt.Year),
                 Gender = gender,
                 YearOfBirth = yearOfBirth,
-                Status = state.ElementAtOrDefault(0).Status1
+                StatusIndex = cBSelInd
             };
+            if (getCategory(yearOfBirth) == "")
+                return;
+            else
+                newPart.Category = getCategory(yearOfBirth);
 
             dc.Participants.InsertOnSubmit(newPart);
             dc.SubmitChanges();
 
+
         }
 
-        public RL_Datacontext.Participants returnParticipant(int startNumber)
+        public RL_Datacontext.Participants returnParticipantByStartnumber(int startNumber)
         {
             RL_Datacontext.Participants part = null;
             try
@@ -79,14 +79,100 @@ namespace Rangliste_TV_Oberi.Businessobjects
             return part;
         }
 
+        public RL_Datacontext.Participants returnParticipantById(int Id)
+        {
+            RL_Datacontext.Participants part = null;
+            try
+            {
+                part = (from p in dc.Participants
+                        where p.Id == Id
+                        select p).First();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Teilnehmer existiert nicht");
+                return null;
+            }
+
+            return part;
+        }
+
+        public bool updateParticipant(int participantId, string name, int yearOfBirth, int statusIndex, string gender, WrapPanel wPDisciplines)
+        {
+            RL_Datacontext.Participants participant = (from p in dc.Participants
+                                                       where p.Id == participantId
+                                                       select p).First();
+            if (getCategory(yearOfBirth) == "")
+                return false;
+
+            participant.Name = name;
+            participant.YearOfBirth = yearOfBirth;
+            participant.Category = getCategory(yearOfBirth);
+            participant.StatusIndex = statusIndex;
+            participant.Gender = gender;
+
+
+            IEnumerable<WrapPanel> panels = wPDisciplines.Children.OfType<WrapPanel>();
+            List<Businessobjects.Result> results = new List<Businessobjects.Result>();
+            Businessobjects.Result newRes = new Result(gender);
+
+            foreach (var v in panels)
+            {
+                foreach(Label lbl in v.Children.OfType<Label>())
+                { 
+                    if(lbl.Name == "lblDiscName")
+                    {
+                        newRes.DisciplineName = lbl.Content.ToString();
+                    }
+                }
+                foreach(TextBox tB in v.Children.OfType<TextBox>())
+                {
+                    tB.Text = tB.Text.Replace(".", ",");
+                    float result = 0;
+                    try
+                    {
+                        result = (float) Convert.ToDouble(tB.Text);
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                    newRes.result = result;
+                }
+                newRes.getPoints();
+                results.Add(newRes);
+                newRes = new Result(gender);
+            }
+
+            participant.Results.Clear();
+
+            foreach(var v in results)
+            {
+                RL_Datacontext.Results res = new RL_Datacontext.Results()
+                {
+                    Discipline = v.DisciplineName, Result = v.result, Points = v.Points
+                };
+                participant.Results.Add(res);
+            }
+
+            dc.SubmitChanges();
+
+            return true;
+        }
+
         /// <summary>
         /// finds out the participants category by his age
         /// </summary>
         /// <param name="yearOfBirth"></param>
         /// <param name="currentYear"></param>
         /// <returns></returns>
-        public string getCategory(int yearOfBirth, int currentYear)
+        public string getCategory(int yearOfBirth)
         {
+            DateTime dt = DateTime.Now;
+            int currentYear = dt.Year;
+            if (currentYear - yearOfBirth <= 5 || currentYear - yearOfBirth >= 16)
+                return "";
+
             IEnumerable<RL_Datacontext.Categories> cats = from c in dc.Categories
                                                           where c.Age == currentYear - yearOfBirth
                                                           select c;

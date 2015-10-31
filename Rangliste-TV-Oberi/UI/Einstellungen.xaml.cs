@@ -141,9 +141,7 @@ namespace Rangliste_TV_Oberi
 
             helper.prepareTextBoxes(wPAddDisc);
 
-
-            char[] split = new char[] { Convert.ToChar(":") };
-            string currentName = lBDisciplines.SelectedItem.ToString().Split(split)[1];
+            string currentName = ((ListBoxItem)lBDisciplines.SelectedValue).Content.ToString();
 
             discipine.fillwPAddDisc(currentName.Trim(), tBDisciplineName, cBoxResultType, tBMinRes, tBResIncr, tBMinPts, tBPtsIncr, tBMinResF, tBResIncrF, tBMinPtsF, tBPtsIncrF);
 
@@ -254,8 +252,7 @@ namespace Rangliste_TV_Oberi
                 
             DiscSetSaveButtonMode = "update";
 
-            ListBoxItem item = (ListBoxItem)lBEditDiscSets.SelectedItems[0];
-            string discSetName = item.Content.ToString();
+            string discSetName = ((ListBoxItem)lBEditDiscSets.SelectedValue).Content.ToString();
             tBDiscSetName.Foreground = Brushes.Black;
 
             discipine.filllBDiscSet(discSetName, tBDiscSetName, lBDiscSet);

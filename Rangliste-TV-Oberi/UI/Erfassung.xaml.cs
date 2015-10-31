@@ -24,8 +24,6 @@ namespace Rangliste_TV_Oberi
 
         private MainWindow main = (MainWindow)App.Current.MainWindow;
 
-        RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
-
         public Erfassung()
         {
             InitializeComponent();

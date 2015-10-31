@@ -114,6 +114,7 @@
     <Compile Include="Businessobjects\Discipline.cs" />
     <Compile Include="Businessobjects\GenearalHelper.cs" />
     <Compile Include="Businessobjects\Participant.cs" />
+    <Compile Include="Businessobjects\Result.cs" />
     <Compile Include="RL Datacontext\RLDB.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -173,9 +174,6 @@
     <Resource Include="Res\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Res\info_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
@@ -197,6 +195,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Res\delete.png" />
     <Content Include="RL-Database.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

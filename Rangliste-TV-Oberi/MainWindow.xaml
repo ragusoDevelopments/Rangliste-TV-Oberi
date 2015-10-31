@@ -3,13 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Rangliste TV-Oberi" Height="432" Width="638" Icon="Res/icon.ico" SizeToContent="Manual" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Closed="Window_Closed">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        
-        <Menu HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="631" Background="White" Grid.ColumnSpan="2">
-            
+        <Menu HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="631" Background="White">
             <MenuItem Header="Anwendung">
                 <MenuItem Name="menuItemErfassng" Header="Erfassung" Click="menuItemErfassng_Click"/>
                 <MenuItem Name="menuItemexport" Header="Datenbank als .csv-Datei exportieren"/>
@@ -22,8 +16,42 @@
                 <MenuItem Name="menuItemInfo" Header="Info" HorizontalAlignment="Left" Width="140" Click="menuItemInfo_Click"/>
             </MenuItem>
         </Menu>
-        
-        <Label Content="Update" HorizontalAlignment="Left" Height="59" Margin="254,0,0,0" VerticalAlignment="Top" Width="126" FontSize="36" Grid.ColumnSpan="2"/>
-        <TextBox Name="tBStartnumber" Text="Startnummer" HorizontalAlignment="Left" Height="19" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="78" Foreground="#FF7E7E7E" GotFocus="tBStartnumber_GotFocus" LostFocus="tBStartnumber_LostFocus" KeyDown="tBStartnumber_KeyDown"/>
+
+
+        <Label Content="Update" HorizontalAlignment="Left" Height="59" Margin="255,3,0,0" VerticalAlignment="Top" Width="126" FontSize="36"/>
+        <TextBox Name="tBStartnumber" Text="Startnummer" HorizontalAlignment="Left" Height="19" Margin="10,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="78" Foreground="#FF7E7E7E" GotFocus="tBStartnumber_GotFocus" LostFocus="tBStartnumber_LostFocus" KeyDown="tBStartnumber_KeyDown"/>
+
+        <WrapPanel Name="wPBasicInfo" HorizontalAlignment="Left" Height="313" Margin="10,80,0,0" VerticalAlignment="Top" Width="157" Background="White" OpacityMask="White">
+            <TextBox Name="tBName" Height="20" TextWrapping="Wrap" Text="Name" Width="147" Foreground="Black"/>
+            <TextBox Name="tBYear" Height="20" TextWrapping="Wrap" Text="Jahrgang" Width="63" Foreground="Black" Margin="0,13,0,0" TextChanged="tBYear_TextChanged"/>
+            <Label Height="27" Width="75" Name="lblCategory" Margin="0,10,0,0" Content="asdad"/>
+            <ComboBox Name="cBStatus" HorizontalAlignment="Left" Height="24" Margin="0,12,0,0" VerticalAlignment="Top" Width="147">
+                <ComboBoxItem Content="Aktiv"/>
+                <ComboBoxItem Content="Ausser Konkurrenz"/>
+                <ComboBoxItem Content="Disqualifiziert"/>
+                <ComboBoxItem Content="fremder Tu/Ti"/>
+                <ComboBoxItem Content="keine Anmeldung"/>
+                <ComboBoxItem Content="nicht gestartet"/>
+                <ComboBoxItem Content="Unfall"/>
+            </ComboBox>
+            <GroupBox x:Name="gBGender" Header="Geschlecht" HorizontalAlignment="Left" VerticalAlignment="Top" Height="79" Width="132" Margin="0,13,0,0">
+                <Grid HorizontalAlignment="Left" Height="69" Margin="0,0,-2,-12" VerticalAlignment="Top" Width="122">
+                    <RadioButton x:Name="rBMale" Content="männlich" HorizontalAlignment="Left" Height="19" Margin="10,10,0,0" VerticalAlignment="Top" Width="102"/>
+                    <RadioButton x:Name="rBFemale" Content="weiblich" HorizontalAlignment="Left" Height="25" Margin="10,34,0,0" VerticalAlignment="Top" Width="102"/>
+                </Grid>
+            </GroupBox>
+            <Button Content="Speichern" Name="btnSave" Height="58" Width="146" Margin="0,70,0,0" Background="White" BorderBrush="White" Click="btnSave_Click"/>
+
+        </WrapPanel>
+        <WrapPanel Name="wPDisciplineStuff" HorizontalAlignment="Left" Height="329" Margin="172,67,0,0" VerticalAlignment="Top" Width="450">
+            <Label Content="Disziplin Hinzufügen" Height="28" Width="133" Margin="5,0,0,0"/>
+            <Label Content="Disziplin-Satz Hinzufügen" Height="28" Width="146" Margin="10,0,53,0"/>
+            <ComboBox Height="23" Width="123" x:Name="cBAddDiscipline" SelectionChanged="cBAddDiscipline_SelectionChanged" Margin="6,0,0,0"/>
+            <ComboBox Height="23" Width="138" Margin="23,0,0,0" x:Name="cBAddDisciplineSet" SelectionChanged="cBAddDisciplineSet_SelectionChanged"/>
+            <ScrollViewer Height="275" Width="450" Margin="0,3,0,0">
+                <WrapPanel x:Name="wPDisciplines" Width="428" />
+            </ScrollViewer>
+        </WrapPanel>
+
     </Grid>
 </Window>
