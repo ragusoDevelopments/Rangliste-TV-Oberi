@@ -61,7 +61,7 @@ namespace Rangliste_TV_Oberi.Businessobjects
 
         }
 
-        public RL_Datacontext.Participants returnParticipantByStartnumber(int startNumber)
+        public RL_Datacontext.Participants returnParticipant(int startNumber)
         {
             RL_Datacontext.Participants part = null;
             try
@@ -79,23 +79,24 @@ namespace Rangliste_TV_Oberi.Businessobjects
             return part;
         }
 
-        public RL_Datacontext.Participants returnParticipantById(int Id)
+        public IEnumerable<RL_Datacontext.Participants> returnParticipants(string category, string gender)
         {
-            RL_Datacontext.Participants part = null;
-            try
-            {
-                part = (from p in dc.Participants
-                        where p.Id == Id
-                        select p).First();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Teilnehmer existiert nicht");
-                return null;
-            }
+            IEnumerable<RL_Datacontext.Participants> participants = from p in dc.Participants
+                                                                    where p.Category == category
+                                                                    where p.Gender == gender
+                                                                    select p;
 
-            return part;
+            return participants;
         }
+
+        public IEnumerable<RL_Datacontext.Participants> returnParticipants()
+        {
+            IEnumerable<RL_Datacontext.Participants> participants = from p in dc.Participants
+                                                                    select p;
+
+            return participants;
+        }
+
 
         public bool updateParticipant(int participantId, string name, int yearOfBirth, int statusIndex, string gender, WrapPanel wPDisciplines)
         {

@@ -277,7 +277,8 @@ namespace Rangliste_TV_Oberi
         private void Window_Closed(object sender, EventArgs e)
         {
             MainWindow main = (MainWindow)App.Current.MainWindow;
-            main.einstellungenIsOpen = false;
+             bool open = main.einstellungenIsOpen;
+             open = false;
         }
 
         private void tVINewDisc_GotFocus(object sender, RoutedEventArgs e)

@@ -6,10 +6,13 @@
         <Menu HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="631" Background="White">
             <MenuItem Header="Anwendung">
                 <MenuItem Name="menuItemErfassng" Header="Erfassung" Click="menuItemErfassng_Click"/>
-                <MenuItem Name="menuItemexport" Header="Datenbank als .csv-Datei exportieren"/>
+                <MenuItem Name="menuItemExport" Header="Teilnehmer als .csv-Datei exportieren" Click="menuItemExport_Click"/>
                 <MenuItem Name="menuItemImport" Header=".csv-Datei importieren"/>
                 <MenuItem Name="menuItemEinstellungen" Header="Einstellungen" Click="menuItemEinstellungen_Click"/>
                 <MenuItem Name="menuItemClose" Header="Beenden" Click="menuItemClose_Click"/>
+            </MenuItem>
+            <MenuItem Header="Wettkampf">
+                <MenuItem Name="menuItemMakeGroups" Header="Gruppen einteilen" Click="menuItemMakeGroups_Click"/>
             </MenuItem>
 
             <MenuItem Header="Hilfe">
@@ -21,7 +24,7 @@
         <Label Content="Update" HorizontalAlignment="Left" Height="59" Margin="255,3,0,0" VerticalAlignment="Top" Width="126" FontSize="36"/>
         <TextBox Name="tBStartnumber" Text="Startnummer" HorizontalAlignment="Left" Height="19" Margin="10,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="78" Foreground="#FF7E7E7E" GotFocus="tBStartnumber_GotFocus" LostFocus="tBStartnumber_LostFocus" KeyDown="tBStartnumber_KeyDown"/>
 
-        <WrapPanel Name="wPBasicInfo" HorizontalAlignment="Left" Height="313" Margin="10,80,0,0" VerticalAlignment="Top" Width="157" Background="White" OpacityMask="White">
+        <WrapPanel Name="wPBasicInfo" HorizontalAlignment="Left" Height="313" Margin="10,80,0,0" VerticalAlignment="Top" Width="157" Background="White" OpacityMask="White" Visibility="Hidden">
             <TextBox Name="tBName" Height="20" TextWrapping="Wrap" Text="Name" Width="147" Foreground="Black"/>
             <TextBox Name="tBYear" Height="20" TextWrapping="Wrap" Text="Jahrgang" Width="63" Foreground="Black" Margin="0,13,0,0" TextChanged="tBYear_TextChanged"/>
             <Label Height="27" Width="75" Name="lblCategory" Margin="0,10,0,0" Content="asdad"/>
@@ -43,7 +46,7 @@
             <Button Content="Speichern" Name="btnSave" Height="58" Width="146" Margin="0,70,0,0" Background="White" BorderBrush="White" Click="btnSave_Click"/>
 
         </WrapPanel>
-        <WrapPanel Name="wPDisciplineStuff" HorizontalAlignment="Left" Height="329" Margin="172,67,0,0" VerticalAlignment="Top" Width="450">
+        <WrapPanel Name="wPDisciplineStuff" HorizontalAlignment="Left" Height="329" Margin="172,67,0,0" VerticalAlignment="Top" Width="450" Visibility="Hidden">
             <Label Content="Disziplin Hinzufügen" Height="28" Width="133" Margin="5,0,0,0"/>
             <Label Content="Disziplin-Satz Hinzufügen" Height="28" Width="146" Margin="10,0,53,0"/>
             <ComboBox Height="23" Width="123" x:Name="cBAddDiscipline" SelectionChanged="cBAddDiscipline_SelectionChanged" Margin="6,0,0,0"/>

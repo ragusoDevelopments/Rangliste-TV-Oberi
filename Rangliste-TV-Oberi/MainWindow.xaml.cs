@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+
 
 namespace Rangliste_TV_Oberi
 {
@@ -62,7 +64,7 @@ namespace Rangliste_TV_Oberi
                 return;
             }
 
-            RL_Datacontext.Participants participant = _participant.returnParticipantByStartnumber(startnumber);
+            RL_Datacontext.Participants participant = _participant.returnParticipant(startnumber);
             if (participant == null)
                 return;
             #endregion
@@ -131,6 +133,19 @@ namespace Rangliste_TV_Oberi
 
         private void menuItemClose_Click(object sender, RoutedEventArgs e)
         {
+            Window info = App.Current.Windows.OfType<Info>().First();
+            Window settings = App.Current.Windows.OfType<Einstellungen>().First();
+            Window erfassung = App.Current.Windows.OfType<Erfassung>().First();
+
+
+
+            if (infoIsOpen)
+                info.Close();
+            if (einstellungenIsOpen)
+                settings.Close(); 
+            if (erfassungIsOpen)
+                erfassung.Close();
+
             App.Current.Shutdown();
         }
 
@@ -342,5 +357,90 @@ namespace Rangliste_TV_Oberi
             }
         }
 
+        private void menuItemExport_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime dt = DateTime.Now;
+            Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+            sfd.FileName = "Rangturnen " + dt.Day + "." + dt.Month + "." + dt.Year;
+            sfd.DefaultExt = ".csv";
+            sfd.Filter = "CSV Dokumente (.csv)|*.csv";
+
+            Nullable<bool> result = sfd.ShowDialog();
+
+            if (result == true)
+            {
+                string path = sfd.FileName;
+                IEnumerable<RL_Datacontext.Participants> participants = _participant.returnParticipants();
+
+                File.Create(path).Close();
+
+                StreamWriter sw = new StreamWriter(path);
+                foreach (var v in participants)
+                {
+                    string germanGender;
+                    if (v.Gender == "male")
+                        germanGender = "(Knaben)";
+                    else
+                        germanGender = "(Maedchen)";
+                    sw.WriteLine(v.Name + ";" + v.Category + germanGender + ";" + v.YearOfBirth + ";" + v.Startnumber);
+                }
+                sw.Close();
+
+            }
+        }
+
+        private void menuItemMakeGroups_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<RL_Datacontext.Participants> participantsOSMale = _participant.returnParticipants("OS", "male");
+            IEnumerable<RL_Datacontext.Participants> participantsMSMale = _participant.returnParticipants("MS", "male");
+            IEnumerable<RL_Datacontext.Participants> participantsUSMale = _participant.returnParticipants("US", "male");
+
+            IEnumerable<RL_Datacontext.Participants> participantsOSFemale = _participant.returnParticipants("OS", "female");
+            IEnumerable<RL_Datacontext.Participants> participantsMSFemale = _participant.returnParticipants("MS", "female");
+            IEnumerable<RL_Datacontext.Participants> participantsUSFemale = _participant.returnParticipants("US", "female");
+
+            List<IEnumerable<RL_Datacontext.Participants>> allParticipants = new List<IEnumerable<RL_Datacontext.Participants>>();
+            allParticipants.Add(participantsOSMale);
+            allParticipants.Add(participantsMSMale);
+            allParticipants.Add(participantsUSMale);
+
+            allParticipants.Add(participantsOSFemale);
+            allParticipants.Add(participantsMSFemale);
+            allParticipants.Add(participantsUSFemale);
+
+
+            DateTime dt = DateTime.Now;
+            Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+            sfd.FileName = "Gruppen " + dt.Year;
+            sfd.DefaultExt = ".csv";
+            sfd.Filter = "CSV Dokumente (.csv)|*.csv";
+
+            Nullable<bool> result = sfd.ShowDialog();
+
+            if (result == true)
+            {
+                string path = sfd.FileName;
+
+                File.Create(path).Close();
+
+                StreamWriter sw = new StreamWriter(path);
+                foreach (var v in allParticipants)
+                {
+                    if (v.Count() != 0)
+                    {
+                        sw.WriteLine("Gruppe " + v.ElementAt(0).Category + " " + v.ElementAt(0).Gender);
+                        foreach (var v2 in v)
+                        {
+                            sw.WriteLine(v2.Name);
+                        }
+                        sw.WriteLine();
+                    }
+
+                }
+                sw.Close();
+            }
+
+
+        }
     }
 }
