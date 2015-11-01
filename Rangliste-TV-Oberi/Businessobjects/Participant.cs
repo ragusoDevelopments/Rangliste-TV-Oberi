@@ -10,7 +10,6 @@ namespace Rangliste_TV_Oberi.Businessobjects
     class Participant
     {
         private static RL_Datacontext.RLDBDataContext dc = new RL_Datacontext.RLDBDataContext();
-
         /// <summary>
         /// fills the status-table 
         /// </summary>
@@ -81,10 +80,12 @@ namespace Rangliste_TV_Oberi.Businessobjects
 
         public IEnumerable<RL_Datacontext.Participants> returnParticipants(string category, string gender)
         {
-            IEnumerable<RL_Datacontext.Participants> participants = from p in dc.Participants
-                                                                    where p.Category == category
-                                                                    where p.Gender == gender
-                                                                    select p;
+            IEnumerable<RL_Datacontext.Participants> participants = null;
+
+            participants = from p in dc.Participants
+                           where p.Category == category
+                           where p.Gender == gender
+                           select p;
 
             return participants;
         }
@@ -97,6 +98,61 @@ namespace Rangliste_TV_Oberi.Businessobjects
             return participants;
         }
 
+        private void calculatePoints(int Id)
+        {
+            IEnumerable<RL_Datacontext.Participants> participants = returnParticipants();
+
+            foreach (var v in participants)
+            {
+                IEnumerable<RL_Datacontext.Results> results = v.Results;
+                int totalPoints = 0;
+
+                foreach (var v2 in results)
+                {
+                    totalPoints += (int)v2.Points;
+                }
+
+                v.TotalPoints = totalPoints;
+
+                dc.SubmitChanges();
+            }
+        }
+
+        public IEnumerable<RL_Datacontext.Participants> returnOrderedParticipantForRating(string gender, string category)
+        {
+            IEnumerable<RL_Datacontext.Participants> participants = from p in dc.Participants
+                                                                    where p.Category == category
+                                                                    where p.Gender == gender
+                                                                    select p;
+
+            foreach (var v in participants)
+                calculatePoints(v.Id);
+
+            participants = from p in dc.Participants
+                           where p.Category == category
+                           where p.Gender == gender
+                           orderby p.TotalPoints descending
+                           select p;
+            int rank = 0;
+            
+            for(int i = 0; i <= participants.Count()-1 ;i ++)
+            {
+                if(i > 0 && participants.ElementAt(i).TotalPoints == participants.ElementAt(i-1).TotalPoints)
+                {
+                    participants.ElementAt(i).Rank = rank;
+                }
+                else
+                {
+                    rank++;
+                    participants.ElementAt(i).Rank = rank;  
+                }
+            }
+
+            return participants;
+
+
+
+        }
 
         public bool updateParticipant(int participantId, string name, int yearOfBirth, int statusIndex, string gender, WrapPanel wPDisciplines)
         {
@@ -119,20 +175,20 @@ namespace Rangliste_TV_Oberi.Businessobjects
 
             foreach (var v in panels)
             {
-                foreach(Label lbl in v.Children.OfType<Label>())
-                { 
-                    if(lbl.Name == "lblDiscName")
+                foreach (Label lbl in v.Children.OfType<Label>())
+                {
+                    if (lbl.Name == "lblDiscName")
                     {
                         newRes.DisciplineName = lbl.Content.ToString();
                     }
                 }
-                foreach(TextBox tB in v.Children.OfType<TextBox>())
+                foreach (TextBox tB in v.Children.OfType<TextBox>())
                 {
                     tB.Text = tB.Text.Replace(".", ",");
                     float result = 0;
                     try
                     {
-                        result = (float) Convert.ToDouble(tB.Text);
+                        result = (float)Convert.ToDouble(tB.Text);
                     }
                     catch (Exception)
                     {
@@ -147,11 +203,13 @@ namespace Rangliste_TV_Oberi.Businessobjects
 
             participant.Results.Clear();
 
-            foreach(var v in results)
+            foreach (var v in results)
             {
                 RL_Datacontext.Results res = new RL_Datacontext.Results()
                 {
-                    Discipline = v.DisciplineName, Result = v.result, Points = v.Points
+                    Discipline = v.DisciplineName,
+                    Result = v.result,
+                    Points = v.Points
                 };
                 participant.Results.Add(res);
             }

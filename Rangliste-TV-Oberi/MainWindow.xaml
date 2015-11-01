@@ -13,6 +13,7 @@
             </MenuItem>
             <MenuItem Header="Wettkampf">
                 <MenuItem Name="menuItemMakeGroups" Header="Gruppen einteilen" Click="menuItemMakeGroups_Click"/>
+                <MenuItem Name="menuItemMakeRating" Header="Resultate-Erfassung abgeschlossen, Rangliste erstellen" Click="menuItemMakeRating_Click"/>
             </MenuItem>
 
             <MenuItem Header="Hilfe">

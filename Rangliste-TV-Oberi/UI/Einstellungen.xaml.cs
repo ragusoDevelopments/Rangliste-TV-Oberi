@@ -20,6 +20,8 @@ namespace Rangliste_TV_Oberi
     public partial class Einstellungen : Window
     {
         #region Variables
+        private MainWindow main = (MainWindow)App.Current.MainWindow;
+
         private string SaveButtonMode;
         private string DiscSetSaveButtonMode;
         Businessobjects.GenearalHelper helper = new Businessobjects.GenearalHelper();
@@ -270,15 +272,6 @@ namespace Rangliste_TV_Oberi
                 }
             }
             discipine.filllBDiscSets(lBEditDiscSets);
-        }
-
-
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            MainWindow main = (MainWindow)App.Current.MainWindow;
-             bool open = main.einstellungenIsOpen;
-             open = false;
         }
 
         private void tVINewDisc_GotFocus(object sender, RoutedEventArgs e)
@@ -549,6 +542,13 @@ namespace Rangliste_TV_Oberi
             foclost(tBDiscSetName, "Name");
         }
         #endregion
+
+        
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            main.einstellungenIsOpen = false;
+        }
 
         
 

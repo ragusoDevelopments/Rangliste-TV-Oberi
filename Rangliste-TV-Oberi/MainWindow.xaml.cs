@@ -29,6 +29,8 @@ namespace Rangliste_TV_Oberi
         public bool infoIsOpen = false;
         public bool einstellungenIsOpen = false;
 
+        DateTime dt = DateTime.Now;
+
         int participantId = 0;
 
         public MainWindow()
@@ -142,7 +144,7 @@ namespace Rangliste_TV_Oberi
             if (infoIsOpen)
                 info.Close();
             if (einstellungenIsOpen)
-                settings.Close(); 
+                settings.Close();
             if (erfassungIsOpen)
                 erfassung.Close();
 
@@ -359,9 +361,8 @@ namespace Rangliste_TV_Oberi
 
         private void menuItemExport_Click(object sender, RoutedEventArgs e)
         {
-            DateTime dt = DateTime.Now;
             Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
-            sfd.FileName = "Rangturnen " + dt.Day + "." + dt.Month + "." + dt.Year;
+            sfd.FileName = "Teilnehmer " + dt.Day + "." + dt.Month + "." + dt.Year;
             sfd.DefaultExt = ".csv";
             sfd.Filter = "CSV Dokumente (.csv)|*.csv";
 
@@ -408,8 +409,6 @@ namespace Rangliste_TV_Oberi
             allParticipants.Add(participantsMSFemale);
             allParticipants.Add(participantsUSFemale);
 
-
-            DateTime dt = DateTime.Now;
             Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
             sfd.FileName = "Gruppen " + dt.Year;
             sfd.DefaultExt = ".csv";
@@ -441,6 +440,65 @@ namespace Rangliste_TV_Oberi
             }
 
 
+        }
+
+        private void menuItemMakeRating_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+            sfd.FileName = "Rangliste " + dt.Day + "." + dt.Month + "." + dt.Year;
+            sfd.DefaultExt = ".csv";
+            sfd.Filter = "CSV Dokumente (.csv)|*.csv";
+
+            Nullable<bool> result = sfd.ShowDialog();
+
+            if (result == true)
+            {
+                string path = sfd.FileName;
+
+                File.Create(path).Close();
+                StreamWriter sw = new StreamWriter(path);
+
+                List<IEnumerable<RL_Datacontext.Participants>> allPAarticipants = new List<IEnumerable<RL_Datacontext.Participants>>();
+                IEnumerable<RL_Datacontext.Participants> OSMale = _participant.returnOrderedParticipantForRating("male", "OS");
+                IEnumerable<RL_Datacontext.Participants> MSMale = _participant.returnOrderedParticipantForRating("male", "MS");
+                IEnumerable<RL_Datacontext.Participants> USMale = _participant.returnOrderedParticipantForRating("male", "US");
+
+                IEnumerable<RL_Datacontext.Participants> OSFemale = _participant.returnOrderedParticipantForRating("female", "OS");
+                IEnumerable<RL_Datacontext.Participants> MSFemale = _participant.returnOrderedParticipantForRating("female", "MS");
+                IEnumerable<RL_Datacontext.Participants> USFemale = _participant.returnOrderedParticipantForRating("female", "US");
+
+                allPAarticipants.Add(OSMale);
+                allPAarticipants.Add(MSMale);
+                allPAarticipants.Add(USMale);
+
+                allPAarticipants.Add(OSFemale);
+                allPAarticipants.Add(MSFemale);
+                allPAarticipants.Add(USFemale);
+
+                foreach (var v in allPAarticipants)
+                {
+                    if (v.Count() != 0)
+                    {
+                        string germanGender = "";
+                        if (v.ElementAt(0).Gender == "male")
+                            germanGender = "Knaben";
+                        else
+                            germanGender = "Maedchen";
+
+                        sw.WriteLine(germanGender + ", Kategorie " + v.ElementAt(0).Category);
+                        sw.WriteLine("Rang;Name;Punkte");
+
+                        foreach (var v2 in v)
+                        {
+                            sw.WriteLine(v2.Rank + ";" + v2.Name + ";" + v2.TotalPoints);
+                        }
+                        sw.WriteLine();
+                    }
+
+                }
+                sw.Close();
+                System.Diagnostics.Process.Start(path);
+            }
         }
     }
 }
