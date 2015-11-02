@@ -25,6 +25,10 @@ namespace Rangliste_TV_Oberi
         Businessobjects.Participant _participant = new Businessobjects.Participant();
         Businessobjects.Discipline _discipline = new Businessobjects.Discipline();
 
+        Erfassung erfassung;
+        Einstellungen einstellungen;
+        Info info;
+
         public bool erfassungIsOpen = false;
         public bool infoIsOpen = false;
         public bool einstellungenIsOpen = false;
@@ -38,7 +42,10 @@ namespace Rangliste_TV_Oberi
             #region initStuff
             InitializeComponent();
 
-            Erfassung erfassung = new Erfassung();
+            erfassung = new Erfassung();
+            einstellungen = new Einstellungen();
+            info = new Info();
+
             erfassung.Show();
             erfassungIsOpen = true;
             #endregion
@@ -102,7 +109,6 @@ namespace Rangliste_TV_Oberi
         {
             if (!infoIsOpen)
             {
-                Info info = new Info();
                 info.Show();
                 infoIsOpen = true;
             }
@@ -122,7 +128,6 @@ namespace Rangliste_TV_Oberi
         {
             if (!einstellungenIsOpen)
             {
-                Einstellungen einstellungen = new Einstellungen();
                 einstellungen.Show();
                 einstellungenIsOpen = true;
             }
@@ -499,6 +504,14 @@ namespace Rangliste_TV_Oberi
                 sw.Close();
                 System.Diagnostics.Process.Start(path);
             }
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            
+            info.WindowState = this.WindowState;
+            erfassung.WindowState = this.WindowState;
+            einstellungen.WindowState = this.WindowState;
         }
     }
 }
