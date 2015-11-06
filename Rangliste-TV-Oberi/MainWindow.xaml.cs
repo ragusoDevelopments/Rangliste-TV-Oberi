@@ -25,10 +25,6 @@ namespace Rangliste_TV_Oberi
         Businessobjects.Participant _participant = new Businessobjects.Participant();
         Businessobjects.Discipline _discipline = new Businessobjects.Discipline();
 
-        Erfassung erfassung;
-        Einstellungen einstellungen;
-        Info info;
-
         public bool erfassungIsOpen = false;
         public bool infoIsOpen = false;
         public bool einstellungenIsOpen = false;
@@ -42,9 +38,8 @@ namespace Rangliste_TV_Oberi
             #region initStuff
             InitializeComponent();
 
-            erfassung = new Erfassung();
-            einstellungen = new Einstellungen();
-            info = new Info();
+            Erfassung erfassung = new Erfassung();
+
 
             erfassung.Show();
             erfassungIsOpen = true;
@@ -109,6 +104,7 @@ namespace Rangliste_TV_Oberi
         {
             if (!infoIsOpen)
             {
+                Info info = new Info();
                 info.Show();
                 infoIsOpen = true;
             }
@@ -128,6 +124,7 @@ namespace Rangliste_TV_Oberi
         {
             if (!einstellungenIsOpen)
             {
+                Einstellungen einstellungen = new Einstellungen();
                 einstellungen.Show();
                 einstellungenIsOpen = true;
             }
@@ -140,19 +137,6 @@ namespace Rangliste_TV_Oberi
 
         private void menuItemClose_Click(object sender, RoutedEventArgs e)
         {
-            Window info = App.Current.Windows.OfType<Info>().First();
-            Window settings = App.Current.Windows.OfType<Einstellungen>().First();
-            Window erfassung = App.Current.Windows.OfType<Erfassung>().First();
-
-
-
-            if (infoIsOpen)
-                info.Close();
-            if (einstellungenIsOpen)
-                settings.Close();
-            if (erfassungIsOpen)
-                erfassung.Close();
-
             App.Current.Shutdown();
         }
 
@@ -261,15 +245,16 @@ namespace Rangliste_TV_Oberi
             newTextBox.Height = 20;
             newTextBox.Text = value.ToString();
 
-            var brush = new ImageBrush();
-            brush.ImageSource = new BitmapImage(new Uri("C:\\Users\\Andrea\\Desktop\\Programme\\C#\\Rangliste TV-Oberi\\Rangliste-TV-Oberi\\Res\\delete.png", UriKind.Relative));
+            //var brush = new ImageBrush();
+            //brush.ImageSource = new BitmapImage(new Uri("C:\\Users\\Andrea\\Desktop\\Programme\\C#\\Rangliste TV-Oberi\\Rangliste-TV-Oberi\\Res\\delete.png", UriKind.Relative));
 
             Button btnDelete = new Button();
             btnDelete.Height = 28;
             btnDelete.Width = 28;
             btnDelete.Margin = new Thickness(137, 0, 0, 0);
-            btnDelete.Background = brush;
+            //btnDelete.Background = brush;
             btnDelete.BorderThickness = new Thickness(0);
+            btnDelete.Content = "X";
             btnDelete.Click += btnDelete_Click;
 
 
@@ -508,7 +493,10 @@ namespace Rangliste_TV_Oberi
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            
+            Info info = App.Current.Windows.OfType<Info>().First();
+            Erfassung erfassung = App.Current.Windows.OfType<Erfassung>().First();
+            Einstellungen einstellungen = App.Current.Windows.OfType<Einstellungen>().First();
+
             info.WindowState = this.WindowState;
             erfassung.WindowState = this.WindowState;
             einstellungen.WindowState = this.WindowState;

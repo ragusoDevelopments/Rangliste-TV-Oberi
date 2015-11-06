@@ -131,6 +131,7 @@ namespace Rangliste_TV_Oberi.Businessobjects
             participants = from p in dc.Participants
                            where p.Category == category
                            where p.Gender == gender
+                           where p.StatusIndex != 2
                            orderby p.TotalPoints descending
                            select p;
             int rank = 0;

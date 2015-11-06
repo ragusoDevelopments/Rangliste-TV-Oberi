@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Rangliste_TV_Oberi.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Rangliste TV-Oberi" Height="432" Width="638" Icon="Res/icon.ico" SizeToContent="Manual" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Closed="Window_Closed" StateChanged="Window_StateChanged">
+        Title="Rangliste TV-Oberi" Height="432" Width="638" SizeToContent="Manual" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Closed="Window_Closed" StateChanged="Window_StateChanged">
     <Grid>
         <Menu HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="631" Background="White">
             <MenuItem Header="Anwendung">

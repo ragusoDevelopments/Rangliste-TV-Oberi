@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Rangliste_TV_Oberi.Erfassung"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Erfassung" Height="315" Width="320" WindowStartupLocation="Manual" Closed="Window_Closed" ResizeMode="NoResize" WindowStyle="ToolWindow" Icon="/Rangliste-TV-Oberi;component/Res/icon.ico"
+        Title="Erfassung" Height="315" Width="320" WindowStartupLocation="Manual" Closed="Window_Closed" ResizeMode="NoResize" WindowStyle="ToolWindow"
          >
     <Grid>
         <Grid.ColumnDefinitions>
