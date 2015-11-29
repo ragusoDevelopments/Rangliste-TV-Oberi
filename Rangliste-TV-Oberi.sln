@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rangliste-TV-Oberi", "Rangliste-TV-Oberi\Rangliste-TV-Oberi.csproj", "{84DDF02D-B2E6-4DBB-B5BA-55F1EF627BA9}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{2F342F72-D207-481D-97AB-0B44D009FF7C}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{08212D35-4648-4570-AC94-03ACD2EBD86B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,8 +17,8 @@ Global
 		{84DDF02D-B2E6-4DBB-B5BA-55F1EF627BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84DDF02D-B2E6-4DBB-B5BA-55F1EF627BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84DDF02D-B2E6-4DBB-B5BA-55F1EF627BA9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F342F72-D207-481D-97AB-0B44D009FF7C}.Debug|Any CPU.ActiveCfg = Debug
-		{2F342F72-D207-481D-97AB-0B44D009FF7C}.Release|Any CPU.ActiveCfg = Release
+		{08212D35-4648-4570-AC94-03ACD2EBD86B}.Debug|Any CPU.ActiveCfg = Debug
+		{08212D35-4648-4570-AC94-03ACD2EBD86B}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -47,7 +47,7 @@ namespace Rangliste_TV_Oberi
 
             _participant.fillCategoriesTable();
             _participant.fillStatusTable();
-        }
+       }
 
 
         private void tBStartnumber_KeyDown(object sender, KeyEventArgs e)
